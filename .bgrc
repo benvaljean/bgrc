@@ -1,0 +1,135 @@
+#!/bin/bash
+#bgbashrc
+
+# This should be in .bashrc but just in case - if not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# Another way to test if running interactively
+#[[ "$-" != *i* ]] && return
+
+bgrc() {
+	echo bgrc 2.15.10 29/09/2015
+	[[ -a ~/.bgrc ]] && echo bgbashrc installed
+	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
+	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
+	[[ -a ~/bin/deploy_bgrc ]] && echo deploy_bgrc installed
+}
+
+#Set psql to use less by default
+export PAGER=less
+
+#Set git (and anything else that uses this var) to use vim by default
+export EDITOR=vim
+
+#Check if git installed
+GIT_INSTALLED=0
+git --version &>/dev/null && GIT_INSTALLED=1
+
+#Funky prompt without setting window title
+#PS1='[\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+#Funky prompt with setting window title
+PS1='\[\033]0;\u@\h\007\][\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+
+#Consider using this for git prompt in future release
+#https://github.com/git/git/blob/8976500cbbb13270398d3b3e07a17b8cc7bff43f/contrib/completion/git-prompt.sh
+
+#Allow autocd (cd dir by just typing it) but do not error if the current version of bash does not support it
+shopt -s autocd 2>/dev/null
+
+shopt -s checkwinsize
+
+shopt -s histappend
+export HISTSIZE=20000
+export HISTFILESIZE=5000
+export HISTCONTROL=ignoreboth
+export HISTTIMEFORMAT='%F %T '
+export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls'
+
+export PATH="$PATH:~/bin:/sbin:/usr/sbin";
+
+#Extended info displayed by default
+export LESS="-M"
+
+#Setup colour when supported
+platform='unknown'
+unamestr=$(uname)
+if [[ "$unamestr" == 'Linux' ]]; then
+   platform='linux'
+elif [[ "$unamestr" == 'FreeBSD' ]] || [[ "$unamestr" == 'Darwin' ]] ; then
+      platform='freebsd'
+elif [[ "$unamestr" == 'SunOS' ]]; then
+   platform='SunOS'
+fi
+
+if [[ "$platform" == 'linux' ]] || [[ "$platform" == 'freebsd' ]]; then
+	alias grep='grep --color'                     # show differences when supported
+	alias egrep='egrep --color=auto'             
+	alias fgrep='fgrep --color=auto'              
+fi
+
+# Some shortcuts for different directory listings
+[[ "$platform" == 'linux' ]] && alias ls='ls -hF --color=tty'                 # classify files in colour
+[[ "$platform" == 'freebsd' ]] && alias ls='ls -HGf'
+alias dir='ls --color=auto --format=vertical'
+alias vdir='ls --color=auto --format=long'
+
+#Ensure syntax highlight is always used in ssh client config
+alias sshconf='vim -c ":setf sshconfig" ~/.ssh/config'
+
+#Ensure environment is maintained with sudo vim to allow vim plugins to work
+alias sv='sudo -E vim'
+
+alias sc='screen -D -R -L'
+alias scnew='screen -L'
+
+alias bgdu='sudo du -sch *'
+
+#ssh auto complete
+#on bash history (slow if history is large)
+#if [ -r ~/.bash_history ]; then
+#	#on bash history (slow if history is large)
+#	ssh_autocomplete_word_list=$(cat ~/.bash_history|awk '{if ($1 == "ssh") print $2}'|egrep  "^[a-zA-Z]"|sort|uniq)
+#fi
+#on ssh client config
+#if [ -r ~/.ssh/config ]; then	
+#		ssh_autocomplete_word_list=$(cat ~/.ssh/config|awk '{if ($1 == "Host") print $2}'|egrep  "^[a-zA-Z]"|grep -v '*')
+#		complete -W "$ssh_autocomplete_word_list" ssh deploy_bgrc
+#fi
+#on ssh known hosts
+if [ -r ~/.ssh/known_hosts ]; then
+	ssh_autocomplete_word_list=$(cut -d " " -f1 ~/.ssh/known_hosts | cut -d "," -f1)
+	complete -W "$ssh_autocomplete_word_list" ssh deploy_bgrc
+fi
+
+#simple git auto complete (tested with 2.3.2)
+#consider git-completion if you would would like something more advanced
+if [[ GIT_INSTALLED == "1" ]]; then
+  git_autocomplete_word_list="add bisect checkout clone commit diff fetch grep init log merge mv pull push rebase reset rm show status tag"
+  complete -W "$git_autocomplete_word_list" git
+fi
+
+#grep through history shortcut
+hg() {
+	history | grep "$@"
+}
+
+page() {
+	#page for long output
+	tempfile=$(mktemp ~/.pager.XXX)
+	"$@" >${tempfile}
+	if (( $(wc -l ${tempfile}|cut -f1 -d' ') >= 25 )); then
+		$PAGER $tempfile
+	else
+		cat $tempfile
+	fi
+	rm $tempfile
+}
+
+#Fix Bug in vim 7.0.237 and possibly later. Not seen in 7.4
+#https://github.com/tpope/vim-pathogen/issues/118
+export VIMBLACKLIST="blah12345"
+
+#Pipe to this to show a particular row
+prow() {
+	awk '{print $'$1'}'
+}

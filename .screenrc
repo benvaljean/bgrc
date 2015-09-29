@@ -1,0 +1,6 @@
+#bgscreenrc
+
+#Use Ctrl-L instead of Ctrl-D so it can be used in bash
+escape ^ll
+#Large scrollback
+defscrollback 10000
