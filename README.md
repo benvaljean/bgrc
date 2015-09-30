@@ -45,6 +45,7 @@ Improvements to vimrc
 Improvements to screenrc
 
 - Use Ctrl-L instead of Ctrl-D as the command character to free up Ctrl-D for bash.
+- Longer screen scrollback
 
 ## deploy_bgrc
 
