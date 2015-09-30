@@ -6,15 +6,25 @@
 #Detect hashed hosts and skip
 #Use scp instead of rsync if it is not available
 
-self=$(basename $0)
-ssh_known_hosts=~/.ssh/known_hosts
+self="$(basename $0)"
+ssh_known_hosts="${HOME}/.ssh/known_hosts"
+bgrc="${HOME}/.bgrc"
+
+if [[ -a $bgrc ]] ; then
+	ver=$(grep -o 'bgrc [0-9].*' ${HOME}/.bgrc)
+else
+	echo $bgrc not found!
+	exit 1
+fi
+
+files="${HOME}/.bgrc ${HOME}/.vimrc ${HOME}/.vim ${HOME}/bin ${HOME}/.hushlogin ${HOME}/.screenrc"
 
 do_deploy()
 {
 	for host in $hosts ; do
 		#scp ~/.bgrc ~/.vimrc ${host}:
 
-		rsync -e "ssh -o PubkeyAuthentication=yes -o PasswordAuthentication=no -o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no -o ConnectTimeout=3" -a ~/.bgrc ~/.vimrc ~/.vim ~/bin ~/.hushlogin ~/.screenrc ${host}:
+		rsync -e "ssh -o PubkeyAuthentication=yes -o PasswordAuthentication=no -o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no -o ConnectTimeout=3" -a ${files} ${host}:
 
 		ssh -o PubkeyAuthentication=yes -o PasswordAuthentication=no -o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no -o ConnectTimeout=3 ${host} 'grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc'
 		#scp ~/bin/deploy_bgrc ${host}:~/bin/deploy_bgrc
@@ -22,20 +32,27 @@ do_deploy()
 	done
 }
 
-[ -z "$@" ] && echo -e "$self \nUsage: $self [-a | host(s)] [--version]\n-a Use ssh known_hosts to apply to all known hosts\nOr specificy space-delimited list" && exit 1 
+#TODO use getopts
+[ -z "$@" ] && echo -e "deploy_bgrc \nUsage: ${self} [-a | host(s) | --local] [--version]\n-a Use ssh known_hosts to apply to all known hosts\nOr specificy space-delimited list\n--local Deploy from the cloned git repo to your local environment" && exit 1 
 
-#[[ $1 == "--version" ]] && echo $self $ver && exit 0
+[[ $1 == "--version" ]] && echo deploy_bgrc ${ver} && exit 0
 
 
-if [ $1 == "-a" ]; then
-	if [ -a $ssh_known_hosts ]; then
-	      hosts=$(awk -F'[ ,]' '{print $1}' $ssh_known_hosts )
+if [[ $1 == "-a" ]]; then
+	if [ -a ${ssh_known_hosts} ]; then
+	      hosts=$(awk -F'[ ,]' '{print $1}' ${ssh_known_hosts} )
 		  do_deploy
 		  exit 0
     else
-          echo ssh known hosts file $ssh_known_hosts not found!
+          echo ssh known hosts file ${ssh_known_hosts} not found!
           exit 1
     fi
+elif [[ $1 == "--local" ]]; then
+	#TODO add --local functionality to do_deploy() instead of it being here
+	files="../.bgrc ../.vimrc ../.vim ../bin ../.hushlogin ../.screenrc"
+	rsync -a ${files} ${HOME}
+	grep bgrc ${bgrc} >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
+	echo Done local install to ${HOME}
 else
           hosts=$@
           do_deploy
