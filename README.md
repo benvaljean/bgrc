@@ -19,13 +19,13 @@ Improvements to bash and some commonly used programmes
 
 *Features include*
 
--Improvements to bash history - longer history, common and dupes ignored and timestamp added
--Colours used in grep/ls when supported
--ssh auto-complete based on ssh known hosts
--Useful prompt
--Page commands on long-output with `page command`
--grep through history with `hg pattern`
--View only column x when you pipe to `prow x`
+- Improvements to bash history - longer history, common and dupes ignored and timestamp added
+- Colours used in grep/ls when supported
+- ssh auto-complete based on ssh known hosts
+- Useful prompt
+- Page commands on long-output with `page command`
+- grep through history with `hg pattern`
+- View only column x when you pipe to `prow x`
 
 ## bgvimrc
 
@@ -34,15 +34,17 @@ Improvements to vimrc
 
 *Features include*
 
--Use `;` instead of `:` for commands - no need to press shift
--Use `qq` instead of `q!` to exit without saving - now exit a file without saving by typing `;qq` instead of `:q!` by default.
--Syntax highlighting with solarized colours
--NERDTree plugin allow you to browse and view files in a tree view
+- Use `;` instead of `:` for commands - no need to press shift
+- Use `qq` instead of `q!` to exit without saving - now exit a file without saving by typing `;qq` instead of `:q!` by default.
+- Syntax highlighting with solarized colours
+- NERDTree plugin allow you to browse and view files in a tree view
 
 ## bgscreenrc
 
 `.screenrc`
 Improvements to screenrc
+
+- Use Ctrl-L instead of Ctrl-D as the command character to free up Ctrl-D for bash.
 
 ## deploy_bgrc
 
