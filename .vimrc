@@ -7,14 +7,6 @@ endif
 
 filetype on
 
-function CommentLines()
-  "let Comment="#" " shell, tcl, php, perl
-  exe ":s@^@".g:Comment."@g"
-  exe ":s@$@".g:EndComment."@g"
-endfunction
-" map visual mode keycombo 'co' to this function
-vmap co :call CommentLines()<CR>
-
 :set nocp
 if &t_Co > 2 || has("gui_running")
   syntax on

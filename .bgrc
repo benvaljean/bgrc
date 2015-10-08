@@ -84,9 +84,12 @@ alias sshconf='vim -c ":setf sshconfig" ~/.ssh/config'
 #Ensure environment is maintained with sudo vim to allow vim plugins to work
 alias sv='sudo -E vim'
 
+#Screen attach here and now and enable logging
 alias sc='screen -D -R -L'
+#Or create a new session anyway
 alias scnew='screen -L'
 
+#du alias useful for finding large dirs
 alias bgdu='sudo du -sch *'
 
 #ssh auto complete
