@@ -8,7 +8,7 @@
 #[[ "$-" != *i* ]] && return
 
 bgrc() {
-	echo bgrc 2.17.1 08/10/2015
+	echo bgrc 2.17.2 09/10/2015
 	[[ -a ~/.bgrc ]] && echo bgbashrc installed
 	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
 	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
@@ -111,7 +111,7 @@ fi
 
 #simple git auto complete (tested with 2.3.2)
 #consider git-completion if you would would like something more advanced
-if [[ GIT_INSTALLED == "1" ]]; then
+if [[ $GIT_INSTALLED == "1" ]]; then
   git_autocomplete_word_list="add bisect checkout clone commit diff fetch grep init log merge mv pull push rebase reset rm show status tag"
   complete -W "$git_autocomplete_word_list" git
 fi
@@ -124,13 +124,13 @@ hg() {
 page() {
 	#page for long output
 	tempfile=$(mktemp ~/.pager.XXX)
-	"$@" >${tempfile}
-	if (( $(wc -l ${tempfile}|cut -f1 -d' ') >= 25 )); then
-		$PAGER $tempfile
+	"$@" >"${tempfile}"
+	if (( $(awk 'END {print NR}' "${tempfile}") >= 25 )); then
+		$PAGER "$tempfile"
 	else
-		cat $tempfile
+		cat "$tempfile"
 	fi
-	rm $tempfile
+	rm "$tempfile"
 }
 
 #Fix Bug in vim 7.0.237 and possibly later. Not seen in 7.4
@@ -139,7 +139,7 @@ export VIMBLACKLIST="blah12345"
 
 #Pipe to this to show a particular row
 prow() {
-	awk '{print $'$1'}'
+	awk '{print $'"$1"'}'
 }
 
 bglvm(){
