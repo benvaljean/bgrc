@@ -109,11 +109,15 @@ if [ -r ~/.ssh/known_hosts ]; then
 	complete -W "$ssh_autocomplete_word_list" ssh deploy_bgrc
 fi
 
-#simple git auto complete (tested with 2.3.2)
-#consider git-completion if you would would like something more advanced
+#git improvements
 if [[ $GIT_INSTALLED == "1" ]]; then
-  git_autocomplete_word_list="add bisect checkout clone commit diff fetch grep init log merge mv pull push rebase reset rm show status tag"
-  complete -W "$git_autocomplete_word_list" git
+	#simple git auto complete (tested with 2.3.2)
+	#consider git-completion if you would would like something more advanced
+	git_autocomplete_word_list="add bisect checkout clone commit diff fetch grep init log merge mv pull push rebase reset rm show status tag"
+	complete -W "$git_autocomplete_word_list" git
+	#use vim as default pager with ansi escape sequences, if not already set by user
+	grep "pager =" ${HOME}/.gitconfig &>/dev/null || git config --global core.pager "vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -"
+  
 fi
 
 #grep through history shortcut
