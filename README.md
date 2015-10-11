@@ -19,9 +19,10 @@ Improvements to bash and some commonly used programmes
 
 *Features include*
 
+- ssh auto-complete based on ssh known hosts and client config
 - Improvements to bash history - longer history, common and dupes ignored and timestamp added
+- Default git pager set to vim with ANSI colours interpreted
 - Colours used in grep/ls when supported
-- ssh auto-complete based on ssh known hosts
 - Useful prompt
 - Page commands on long-output with `page command`
 - grep through history with `hg pattern`
