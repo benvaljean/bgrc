@@ -49,7 +49,7 @@ if [[ $1 == "-a" ]]; then
     fi
 elif [[ $1 == "--local" ]]; then
 	#TODO add --local functionality to do_deploy() instead of it being here
-	[ -a ../.bgrc ] || echo Error: Cannot locate ../.bgrc && exit 1
+	[[ ! -r ../.bgrc ]] && echo Error: Cannot locate ../.bgrc && exit 1
 	files="../.bgrc ../.vimrc ../.vim ../bin ../.hushlogin ../.screenrc"
 	rsync -a ${files} ${HOME}
 	grep bgrc ${bgrc} >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
