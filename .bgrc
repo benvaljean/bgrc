@@ -93,21 +93,17 @@ alias scnew='screen -L'
 alias bgdu='sudo du -sch *'
 
 #ssh auto complete
-#on bash history (slow if history is large)
-#if [ -r ~/.bash_history ]; then
-#	#on bash history (slow if history is large)
-#	ssh_autocomplete_word_list=$(cat ~/.bash_history|awk '{if ($1 == "ssh") print $2}'|egrep  "^[a-zA-Z]"|sort|uniq)
-#fi
 #on ssh client config
-#if [ -r ~/.ssh/config ]; then	
-#		ssh_autocomplete_word_list=$(cat ~/.ssh/config|awk '{if ($1 == "Host") print $2}'|egrep  "^[a-zA-Z]"|grep -v '*')
-#		complete -W "$ssh_autocomplete_word_list" ssh deploy_bgrc
-#fi
+if [ -r ~/.ssh/config ]; then	
+		ssh_autocomplete_word_list=$(cat ~/.ssh/config|awk '{if ($1 == "Host") print $2}'|egrep  "^[0-9a-zA-Z]"|grep -v '*')
+fi
 #on ssh known hosts
 if [ -r ~/.ssh/known_hosts ]; then
-	ssh_autocomplete_word_list=$(cut -d " " -f1 ~/.ssh/known_hosts | cut -d "," -f1)
-	complete -W "$ssh_autocomplete_word_list" ssh deploy_bgrc
+	ssh_autocomplete_word_list="$ssh_autocomplete_word_list $(awk -F'[ ,:]' '/^[0-9a-zA-Z]/ {sub(/\[/,"",$1) ; sub(/\]/,"",$1) ; print $1}' ~/.ssh/known_hosts)"
+	complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc
 fi
+
+[[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc
 
 #git improvements
 if [[ $GIT_INSTALLED == "1" ]]; then
