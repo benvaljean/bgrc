@@ -9,6 +9,7 @@
 self="$(basename $0)"
 ssh_known_hosts="${HOME}/.ssh/known_hosts"
 bgrc="${HOME}/.bgrc"
+dirname="$(dirname $0)"
 
 if [[ -a $bgrc ]] ; then
 	ver=$(grep -o 'bgrc [0-9].*' ${HOME}/.bgrc)
