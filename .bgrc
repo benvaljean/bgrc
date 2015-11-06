@@ -8,7 +8,7 @@
 #[[ "$-" != *i* ]] && return
 
 bgrc() {
-	echo bgrc 2.18.1 14/10/2015
+	echo bgrc 2.19.0 06/11/2015
 	[[ -a ~/.bgrc ]] && echo bgbashrc installed
 	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
 	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
@@ -59,12 +59,26 @@ export LESS="-M"
 platform='unknown'
 unamestr=$(uname)
 if [[ "$unamestr" == 'Linux' ]]; then
-   platform='linux'
+    platform='linux'
+    physRAMGb=$(free -g|grep Mem|awk '{print $2}')
+    logicalcpucores=$(cat /proc/cpuinfo|grep -c processor)
+    physicalcpucores=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
 elif [[ "$unamestr" == 'FreeBSD' ]] || [[ "$unamestr" == 'Darwin' ]] ; then
-      platform='freebsd'
+    platform='freebsd'
+    physRAMGb=$(($(sysctl hw.memsize|cut -d' ' -f2)/1024/1024/1024))
+    logicalcpucores=$(sysctl hw.logicalcpu|cut -d' ' -f2)
+    physicalcpucores=$(sysctl hw.physicalcpu|cut -d' ' -f2)
 elif [[ "$unamestr" == 'SunOS' ]]; then
    platform='SunOS'
 fi
+
+bginfo() {
+    if [[ "$unamestr" == 'SunOS' ]]; then
+        echo Not implemented
+    else
+            echo $logicalcpucores logical cores on $physicalcpucores physical cores, ${physRAMGb}Gb RAM
+    fi
+}
 
 if [[ "$platform" == 'linux' ]] || [[ "$platform" == 'freebsd' ]]; then
 	alias grep='grep --color'                     # show differences in colour when supported
@@ -121,9 +135,6 @@ if [[ $GIT_INSTALLED == "1" ]]; then
 	#use vim as default pager with ansi escape sequences, if not already set by user
 	grep "pager =" ${HOME}/.gitconfig &>/dev/null || git config --global core.pager "vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -"
 fi
-
-
-
 
 #grep through history shortcut
 hg() {
