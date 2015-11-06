@@ -100,7 +100,6 @@ fi
 #on ssh known hosts
 if [ -r ~/.ssh/known_hosts ]; then
 	ssh_autocomplete_word_list="$ssh_autocomplete_word_list $(awk -F'[ ,:]' '/^[0-9a-zA-Z]/ {sub(/\[/,"",$1) ; sub(/\]/,"",$1) ; print $1}' ~/.ssh/known_hosts)"
-	complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc
 fi
 
 [[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc sftp
