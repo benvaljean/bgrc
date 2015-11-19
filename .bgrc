@@ -8,7 +8,7 @@
 #[[ "$-" != *i* ]] && return
 
 bgrc() {
-	echo bgrc 2.19.0 06/11/2015
+	echo bgrc 2.19.1b
 	[[ -a ~/.bgrc ]] && echo bgbashrc installed
 	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
 	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
@@ -57,12 +57,15 @@ export LESS="-M"
 
 
 platform='unknown'
+flavour='unknown'
 unamestr=$(uname)
 if [[ "$unamestr" == 'Linux' ]]; then
     platform='linux'
     physRAMGb=$(command free -g|grep Mem|awk '{print $2}')
     logicalcpucores=$(cat /proc/cpuinfo|grep -c processor)
     physicalcpucores=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
+	[[ -f /etc/redhat-release ]] && flavour='enterprise'
+	[[ -f /etc/debian_version ]] && flavour='debian'
 elif [[ "$unamestr" == 'FreeBSD' ]] || [[ "$unamestr" == 'Darwin' ]] ; then
     platform='freebsd'
     physRAMGb=$(($(sysctl hw.memsize|cut -d' ' -f2)/1024/1024/1024))
@@ -167,3 +170,17 @@ bglvm(){
     sudo vgdisplay -C
     sudo lvdisplay -C
 }
+
+#Post-login icons
+
+#chef managed host
+if [[ $flavour == 'enterprise' ]]; then
+	rpm -qa|grep chef &>/dev/null && printf c
+    #[[ -x /usr/bin/chef-client ]] && printf c
+elif [[ $flavour == 'debian' ]]; then
+	dpkg-query -l '*chef*' &>/dev/null && printf c
+fi
+
+#user has active or detached screens running
+#broken need to use -C if available on only $USER
+pgrep -U $USER screen &>/dev/null && printf s
