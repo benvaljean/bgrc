@@ -8,7 +8,7 @@
 #[[ "$-" != *i* ]] && return
 
 bgrc() {
-	echo bgrc 2.18.0 11/10/2015
+	echo bgrc 2.19.0 06/11/2015
 	[[ -a ~/.bgrc ]] && echo bgbashrc installed
 	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
 	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
@@ -59,12 +59,26 @@ export LESS="-M"
 platform='unknown'
 unamestr=$(uname)
 if [[ "$unamestr" == 'Linux' ]]; then
-   platform='linux'
+    platform='linux'
+    physRAMGb=$(command free -g|grep Mem|awk '{print $2}')
+    logicalcpucores=$(cat /proc/cpuinfo|grep -c processor)
+    physicalcpucores=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
 elif [[ "$unamestr" == 'FreeBSD' ]] || [[ "$unamestr" == 'Darwin' ]] ; then
-      platform='freebsd'
+    platform='freebsd'
+    physRAMGb=$(($(sysctl hw.memsize|cut -d' ' -f2)/1024/1024/1024))
+    logicalcpucores=$(sysctl hw.logicalcpu|cut -d' ' -f2)
+    physicalcpucores=$(sysctl hw.physicalcpu|cut -d' ' -f2)
 elif [[ "$unamestr" == 'SunOS' ]]; then
    platform='SunOS'
 fi
+
+bginfo() {
+    if [[ "$unamestr" == 'SunOS' ]]; then
+        echo Not implemented
+    else
+            echo $logicalcpucores logical cores on $physicalcpucores physical cores, ${physRAMGb}Gb RAM
+    fi
+}
 
 if [[ "$platform" == 'linux' ]] || [[ "$platform" == 'freebsd' ]]; then
 	alias grep='grep --color'                     # show differences in colour when supported
@@ -100,20 +114,26 @@ fi
 #on ssh known hosts
 if [ -r ~/.ssh/known_hosts ]; then
 	ssh_autocomplete_word_list="$ssh_autocomplete_word_list $(awk -F'[ ,:]' '/^[0-9a-zA-Z]/ {sub(/\[/,"",$1) ; sub(/\]/,"",$1) ; print $1}' ~/.ssh/known_hosts)"
-	complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc
 fi
 
-[[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc
+[[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc sftp
 
 #git improvements
 if [[ $GIT_INSTALLED == "1" ]]; then
 	#simple git auto complete (tested with 2.3.2)
 	#consider git-completion if you would would like something more advanced
 	git_autocomplete_word_list="add bisect checkout clone commit diff fetch grep init log merge mv pull push rebase reset rm show status tag"
-	complete -W "$git_autocomplete_word_list" git
+	function _gitcomplete()
+	{
+    	case $COMP_CWORD in
+        	1) COMPREPLY=($(compgen -W "$git_autocomplete_word_list" -- ${COMP_WORDS[COMP_CWORD]}));;
+        	*) COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}" ));;
+    	esac
+	}
+	complete -F _gitcomplete git
+
 	#use vim as default pager with ansi escape sequences, if not already set by user
 	grep "pager =" ${HOME}/.gitconfig &>/dev/null || git config --global core.pager "vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -"
-  
 fi
 
 #grep through history shortcut
