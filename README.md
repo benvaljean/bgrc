@@ -1,7 +1,7 @@
 # bgrc
-Improvements or suggestions to your shell experience.
+Improvements or suggestions to your shell experience with extensions useful for sysadmins.
 
-bgrc is a set of improvements and suggestions from the simple defaults in your shell experience. Currently bash, vim and screen are improved. Feel free to investigate and cherry-pick or trying using `deploy_bgrc` to deploy the whole environment.
+bgrc is a set of improvements and suggestions from the simple defaults in your shell experience; and extensions useful for sysadmins. Currently bash, vim and screen are improved. Feel free to investigate and cherry-pick or trying using `deploy_bgrc` to deploy the whole environment.
 
 ## Quickstart
 
@@ -12,6 +12,13 @@ To deploy the whole environment:
 	./deploy_bgrc --local
 
 Caution: vim and screen config could be overwritten (bashrc remains intact)
+
+## Sysadmin extensions
+
+- `bglvm`  Show PV, VG and LV information
+- `bginfo`  Show basic system information
+- [Post-login icons](https://github.com/benvaljean/bgrc/wiki/Post-login%20icons) Show a character before the prompt upon login based on criteria eg. you have screens running
+
 ## bgbashrc
 
 `.bgrc`
