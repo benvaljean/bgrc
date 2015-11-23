@@ -77,9 +77,20 @@ fi
 
 bginfo() {
     if [[ "$unamestr" == 'SunOS' ]]; then
+        #TODO Add Solaris support for mem/CPU and use smbios instead of dmidecode
         echo Not implemented
     else
-            echo $logicalcpucores logical cores on $physicalcpucores physical cores, ${physRAMGb}Gb RAM
+        if [[ -x /usr/sbin/dmidecode ]]; then
+            local dmidecode='/usr/sbin/dmidecode'
+            local dmidecodestrings='system-manufacturer system-product-name system-serial-number'
+            declare -a dmidecodedata
+            for i in $dmidecodestrings
+            do
+                dmidecodedata+=$(sudo $dmidecode -s $i; printf " ")
+            done
+            echo ${dmidecodedata[*]}
+        fi
+        echo $logicalcpucores logical cores on $physicalcpucores physical cores, ${physRAMGb}Gb RAM
     fi
 }
 
