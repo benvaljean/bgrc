@@ -11,11 +11,16 @@ ssh_known_hosts="${HOME}/.ssh/known_hosts"
 bgrc="${HOME}/.bgrc"
 dirname="$(dirname $0)"
 
-if [[ -a $bgrc ]] ; then
-	ver=$(grep -o 'bgrc [0-9].*' ${HOME}/.bgrc)
+#Get current version and verify bgrc is present
+if [[ ! -a $bgrc ]]; then
+	if [[ ! -a ${dirname}/../.bgrc ]]; then
+		echo $bgrc not found!
+		exit 1
+	else
+		bgrc="${dirname}/../.bgrc"
+	fi
 else
-	echo $bgrc not found!
-	exit 1
+	ver=$(grep -o 'bgrc [0-9].*' ${HOME}/.bgrc)
 fi
 
 files="${HOME}/.bgrc ${HOME}/.vimrc ${HOME}/.vim ${HOME}/bin ${HOME}/.hushlogin ${HOME}/.screenrc"
@@ -50,9 +55,9 @@ if [[ $1 == "-a" ]]; then
     fi
 elif [[ $1 == "--local" ]]; then
 	#TODO add --local functionality to do_deploy() instead of it being here
-	[[ ! -r ../.bgrc ]] && echo Error: Cannot locate ../.bgrc && exit 1
-	files="../.bgrc ../.vimrc ../.vim ../bin ../.hushlogin ../.screenrc"
-	rsync -a ${files} ${HOME}
+	[[ ! -a ${dirname}/../.bgrc ]] && echo Error: Cannot locate ${dirname}/../.bgrc && exit 1
+	files="${dirname}/../.bgrc ${dirname}/../.vimrc ${dirname}/../.vim ${dirname}/../bin ${dirname}/../.hushlogin ${dirname}/../.screenrc"
+	rsync -a --force ${files} ${HOME}
 	grep bgrc ${bgrc} >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
 	echo Done local install to ${HOME}
 else
