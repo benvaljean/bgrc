@@ -37,12 +37,16 @@ do_deploy()
 		echo Done $host
 	done
 }
+usage()
+{
+	echo -e "deploy_bgrc \nUsage: ${self} [-a | host(s) | --local] [--version]\n-a Use ssh known_hosts to apply to all known hosts\nOr specificy space-delimited list\n--local Deploy from the cloned git repo to your local environment" 1>&2
+	exit 1
+}
 
-#TODO use getopts
-[ -z "$@" ] && echo -e "deploy_bgrc \nUsage: ${self} [-a | host(s) | --local] [--version]\n-a Use ssh known_hosts to apply to all known hosts\nOr specificy space-delimited list\n--local Deploy from the cloned git repo to your local environment" && exit 1 
+NUMARGS=$#
+[[ $NUMARGS == "0" ]] && usage
 
 [[ $1 == "--version" ]] && echo deploy_bgrc ${ver} && exit 0
-
 
 if [[ $1 == "-a" ]]; then
 	if [ -a ${ssh_known_hosts} ]; then
