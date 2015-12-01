@@ -1,6 +1,6 @@
 " bgvimrc
 " https://github.com/benvaljean/bgrc
-" 
+"
 " Caution: Manual changes are lost when upgrading
 
 "Abort if using evim
@@ -76,3 +76,7 @@ set background=dark
 let g:solarized_termtrans = 1
 colorscheme solarized
 
+"Show whitespace: trailing space as ~ , tab as >--
+"To enable  :set list
+"To disable  :set nolist
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
