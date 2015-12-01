@@ -1,5 +1,8 @@
 #!/bin/bash
-#bgbashrc
+# bgbashrc
+# https://github.com/benvaljean/bgrc
+#
+# Caution: Manual changes are lost when upgrading
 
 # This should be in .bashrc but just in case - if not running interactively, don't do anything
 [ -z "$PS1" ] && return

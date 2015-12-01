@@ -1,4 +1,7 @@
-"bgvimrc
+" bgvimrc
+" https://github.com/benvaljean/bgrc
+" 
+" Caution: Manual changes are lost when upgrading
 
 "Abort if using evim
 if v:progname =~? "evim"
