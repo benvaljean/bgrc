@@ -30,10 +30,12 @@ Improvements to bash and some commonly used programmes
 - Improvements to bash history - longer history, common and dupes ignored and timestamp added
 - Default git pager set to vim with ANSI colours interpreted
 - Colours used in grep/ls when supported
-- Useful prompt
+- Prompt with colours for easier reading and full path
 - Page commands on long-output with `page command`
 - grep through history with `hg pattern`
 - View only column x when you pipe to `prow x`
+- Basic git auto-complete
+- vim as default git pager with ansi escape sequences interpreted to highlight diffs
 
 ## bgvimrc
 
@@ -46,6 +48,7 @@ Improvements to vimrc
 - Use `qq` instead of `q!` to exit without saving - now exit a file without saving by typing `;qq` instead of `:q!` by default.
 - Syntax highlighting with solarized colours
 - NERDTree plugin allow you to browse and view files in a tree view
+- Show trailing spaces as `~` and tabs as `>--`; to enable `:set list`
 
 ## bgscreenrc
 
