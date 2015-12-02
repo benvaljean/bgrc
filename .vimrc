@@ -10,13 +10,11 @@ endif
 
 filetype on
 
-:set nocp
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
 endi
 
-set nocompatible
 set autoindent
 set ignorecase
 set smartcase
