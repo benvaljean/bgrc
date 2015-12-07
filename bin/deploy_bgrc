@@ -11,6 +11,14 @@ ssh_known_hosts="${HOME}/.ssh/known_hosts"
 bgrc="${HOME}/.bgrc"
 dirname="$(dirname $0)"
 
+
+if [ -f ${HOME}/.bgrc.cfg ]; then
+	. ${HOME}/.bgrc.cfg
+fi
+
+SSH_OPTIONS=${SSH_OPTIONS--o PubkeyAuthentication=yes -o PasswordAuthentication=no -o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no -o ConnectTimeout=3}
+
+
 #Get current version and verify bgrc is present
 if [[ ! -a $bgrc ]]; then
 	if [[ ! -a ${dirname}/../.bgrc ]]; then
@@ -28,13 +36,14 @@ files="${HOME}/.bgrc ${HOME}/.vimrc ${HOME}/.vim ${HOME}/bin ${HOME}/.hushlogin 
 do_deploy()
 {
 	for host in $hosts ; do
-		#scp ~/.bgrc ~/.vimrc ${host}:
-
-		rsync -e "ssh -o PubkeyAuthentication=yes -o PasswordAuthentication=no -o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no -o ConnectTimeout=3" -a ${files} ${host}:
-
-		ssh -o PubkeyAuthentication=yes -o PasswordAuthentication=no -o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no -o ConnectTimeout=3 ${host} 'grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc'
-		#scp ~/bin/deploy_bgrc ${host}:~/bin/deploy_bgrc
-		echo Done $host
+		errors=0
+		rsync -e "ssh ${SSH_OPTIONS}" -a ${files} ${host}: || errors=$(expr $errors + 1)
+		ssh ${SSH_OPTIONS} ${host} 'grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc' || errors=$(expr $errors + 1)
+		if [[ "$errors" == "0" ]] ; then
+			echo Done $host
+		else
+			echo Error with $host
+		fi
 	done
 }
 usage()
