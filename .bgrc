@@ -121,7 +121,7 @@ alias sc='screen -D -R -L'
 alias scnew='screen -L'
 
 #du alias useful for finding large dirs
-alias bgdu='sudo du -sch *'
+alias bgdu='sudo du -xsch *'
 
 #ssh auto complete
 #on ssh client config
