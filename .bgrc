@@ -21,8 +21,8 @@ bgrc() {
 #Set psql to use less by default
 export PAGER=less
 
-#Set git (and anything else that uses this var) to use vim by default
-export EDITOR=vim
+#Set default editor
+export EDITOR='/usr/bin/vim'
 
 #Check if git installed
 GIT_INSTALLED=0

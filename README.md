@@ -36,6 +36,8 @@ Improvements to bash and some commonly used programmes
 - View only column x when you pipe to `prow x`
 - Basic git auto-complete
 - vim as default git pager with ansi escape sequences interpreted to highlight diffs
+- Command shortcuts
+- `hds`  A screenful of head
 
 ## bgvimrc
 
