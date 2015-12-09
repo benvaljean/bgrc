@@ -123,6 +123,13 @@ alias scnew='screen -L'
 #du alias useful for finding large dirs
 alias bgdu='sudo du -xsch *'
 
+#Command shortcuts
+alias sshl="ssh-add -l"
+alias wgets="wget --no-check-certificate"
+
+#A screenful of head
+alias hds='head -n $((${LINES} - 4))'
+
 #ssh auto complete
 #on ssh client config
 if [ -r ~/.ssh/config ]; then	
