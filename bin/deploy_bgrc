@@ -37,7 +37,11 @@ do_deploy()
 {
 	for host in "$@" ; do
 		errors=0
-		rsync -e "ssh ${SSH_OPTIONS}" -a ${files} ${host}: || errors=$(expr $errors + 1)
+		if which rsync 2>&1 >/dev/null ; then
+			rsync -e "ssh ${SSH_OPTIONS}" -a ${files} ${host}: || errors=$(expr $errors + 1)
+		else
+			scp ${SSH_OPTIONS} ${files} ${host}: || errors=$(expr $errors + 1)
+		fi
 		ssh ${SSH_OPTIONS} ${host} 'grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc' || errors=$(expr $errors + 1)
 		if [[ "$errors" == "0" ]] ; then
 			echo Done $host
@@ -48,7 +52,7 @@ do_deploy()
 }
 usage()
 {
-	echo -e "deploy_bgrc \nUsage: ${self} [-a | host(s) | --local] [--version]\n-a Use ssh known_hosts to apply to all known hosts\nOr specificy space-delimited list\n--local Deploy from the cloned git repo to your local environment" 1>&2
+	echo -e "deploy_bgrc \nUsage: ${self} -a | -h host | -l [-v] \n-a Use ssh known_hosts to apply to all known hosts\n-h Deploy to single host\n-l Deploy to local environment" 1>&2
 	exit 1
 }
 
