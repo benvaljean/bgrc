@@ -35,7 +35,7 @@ files="${HOME}/.bgrc ${HOME}/.vimrc ${HOME}/.vim ${HOME}/bin ${HOME}/.hushlogin 
 
 do_deploy()
 {
-	for host in $hosts ; do
+	for host in "$@" ; do
 		errors=0
 		rsync -e "ssh ${SSH_OPTIONS}" -a ${files} ${host}: || errors=$(expr $errors + 1)
 		ssh ${SSH_OPTIONS} ${host} 'grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc' || errors=$(expr $errors + 1)
@@ -55,25 +55,49 @@ usage()
 NUMARGS=$#
 [[ $NUMARGS == "0" ]] && usage
 
-[[ $1 == "--version" ]] && echo deploy_bgrc ${ver} && exit 0
+version() {
+	echo deploy_bgrc ${ver}
+	exit 0
+}
 
-if [[ $1 == "-a" ]]; then
+sshdeployallhosts() {
 	if [ -a ${ssh_known_hosts} ]; then
-	      hosts=$(awk -F'[ ,]' '{print $1}' ${ssh_known_hosts} )
-		  do_deploy
+          hosts=$(awk -F'[ ,]' '{print $1}' ${ssh_known_hosts})
+		  do_deploy $hosts
 		  exit 0
     else
           echo ssh known hosts file ${ssh_known_hosts} not found!
           exit 1
     fi
-elif [[ $1 == "--local" ]]; then
+}
+
+sshdeploylocal() {
 	#TODO add --local functionality to do_deploy() instead of it being here
 	[[ ! -a ${dirname}/../.bgrc ]] && echo Error: Cannot locate ${dirname}/../.bgrc && exit 1
 	files="${dirname}/../.bgrc ${dirname}/../.vimrc ${dirname}/../.vim ${dirname}/../bin ${dirname}/../.hushlogin ${dirname}/../.screenrc"
 	rsync -a --force ${files} ${HOME}
 	grep bgrc ${bgrc} >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
 	echo Done local install to ${HOME}
-else
-          hosts=$@
-          do_deploy
-fi
+}
+
+while getopts "ah:vl" opt ; do
+    case $opt in
+        v)
+            version
+            ;;
+        a)
+			sshdeployallhosts
+            ;;
+        h)
+            do_deploy $OPTARG
+            ;;
+        l)
+            sshdeploylocal
+            ;;
+        *|:)
+        	usage
+        	;;
+    esac
+done
+
+[[ "$#" == "0" ]] && usage
