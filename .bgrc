@@ -46,7 +46,7 @@ shopt -s histappend
 
 #Large history; add time and ignore commands that begin with space or are a duplicate
 export HISTSIZE=20000
-export HISTFILESIZE=5000
+export HISTFILESIZE=20000
 export HISTCONTROL=ignoreboth
 export HISTTIMEFORMAT='%F %T '
 
@@ -126,6 +126,7 @@ alias bgdu='sudo du -xsch *'
 #Command shortcuts
 alias sshl="ssh-add -l"
 alias wgets="wget --no-check-certificate"
+alias curls="curl -k"
 
 #A screenful of head
 alias hds='head -n $((${LINES} - 4))'
