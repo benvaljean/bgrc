@@ -9,7 +9,7 @@ To deploy the whole environment:
 
 	git clone --recursive git@github.com:benvaljean/bgrc.git
 	cd bgrc
-	./deploy_bgrc -l
+	bin/deploy_bgrc -l
 
 Caution: vim and screen config could be overwritten (bashrc remains intact)
 
