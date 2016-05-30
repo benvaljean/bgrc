@@ -8,8 +8,8 @@ bgrc is a set of improvements and suggestions from the simple defaults in your s
 To deploy the whole environment:
 
 	git clone --recursive git@github.com:benvaljean/bgrc.git
-	cd bgrc/bin
-	./deploy_bgrc --local
+	cd bgrc
+	./deploy_bgrc -l
 
 Caution: vim and screen config could be overwritten (bashrc remains intact)
 

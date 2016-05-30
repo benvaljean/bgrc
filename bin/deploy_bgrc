@@ -40,7 +40,7 @@ do_deploy()
 		if which rsync 2>&1 >/dev/null ; then
 			rsync -e "ssh ${SSH_OPTIONS}" -a ${files} ${host}: || errors=$(expr $errors + 1)
 		else
-			scp ${SSH_OPTIONS} ${files} ${host}: || errors=$(expr $errors + 1)
+			scp ${SSH_OPTIONS} -r ${files} ${host}: || errors=$(expr $errors + 1)
 		fi
 		ssh ${SSH_OPTIONS} ${host} 'grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc' || errors=$(expr $errors + 1)
 		if [[ "$errors" == "0" ]] ; then
@@ -76,9 +76,8 @@ sshdeployallhosts() {
 }
 
 sshdeploylocal() {
-	#TODO add --local functionality to do_deploy() instead of it being here
-	[[ ! -a ${dirname}/../.bgrc ]] && echo Error: Cannot locate ${dirname}/../.bgrc && exit 1
-	files="${dirname}/../.bgrc ${dirname}/../.vimrc ${dirname}/../.vim ${dirname}/../bin ${dirname}/../.hushlogin ${dirname}/../.screenrc"
+	[[ ! -a .bgrc ]] && echo Error: Cannot locate .bgrc in current directory or \$PATH && exit 1
+	files=".bgrc .vimrc .vim bin .hushlogin .screenrc"
 	rsync -a --force ${files} ${HOME}
 	grep bgrc ${bgrc} >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
 	echo Done local install to ${HOME}
