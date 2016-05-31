@@ -93,7 +93,11 @@ bginfo() {
             done
             echo ${dmidecodedata[*]}
         fi
-        echo $logicalcpucores logical cores on $physicalcpucores physical cores, ${physRAMGb}Gb RAM
+        if [[ -z $logicalcpucores ]]; then
+        	echo Not available 
+        else
+        	echo $logicalcpucores logical cores on $physicalcpucores physical cores, ${physRAMGb}Gb RAM
+        fi
     fi
 }
 
