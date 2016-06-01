@@ -11,7 +11,7 @@
 #[[ "$-" != *i* ]] && return
 
 bgrc() {
-	echo bgrc 2.20.8 2016-05-30
+	echo bgrc 2.20.9 2016-06-01
 	[[ -a ~/.bgrc ]] && echo bgbashrc installed
 	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
 	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
@@ -134,6 +134,11 @@ alias curls="curl -k"
 
 #A screenful of head
 alias hds='head -n $((${LINES} - 4))'
+
+#grep recursively in all files
+grepr() {
+	grep -r "$@" *
+}
 
 #ssh auto complete
 #on ssh client config
