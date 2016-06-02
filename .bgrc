@@ -28,10 +28,15 @@ export EDITOR='/usr/bin/vim'
 GIT_INSTALLED=0
 git --version &>/dev/null && GIT_INSTALLED=1
 
-#Funky prompt without setting window title
-#PS1='[\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
-#Funky prompt with setting window title
-PS1='\[\033]0;\u@\h\007\][\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+#Do not try to set window title if $TERM is not set as it is probably console and the prompt will look ugly
+case "$TERM" in
+	screen*|xterm*|rxvt*|Eterm*|kterm*|dtterm*|ansi*|cygwin*)
+		PS1='\[\033]0;\u@\h\007\][\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+	;;
+	*)
+		PS1='[\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+	;;
+esac
 
 #Consider using this for git prompt in future release
 #https://github.com/git/git/blob/8976500cbbb13270398d3b3e07a17b8cc7bff43f/contrib/completion/git-prompt.sh
