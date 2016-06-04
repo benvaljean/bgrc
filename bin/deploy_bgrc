@@ -2,10 +2,6 @@
 #deploy_bgrc
 #Deploy bgrc environment to other hosts
 
-#TODO
-#Detect hashed hosts and skip
-#Use scp instead of rsync if it is not available
-
 self="$(basename $0)"
 ssh_known_hosts="${HOME}/.ssh/known_hosts"
 bgrc="${HOME}/.bgrc"
