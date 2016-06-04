@@ -73,7 +73,7 @@ sshdeployallhosts() {
 
 sshdeploylocal() {
 	rsync -a --force ${files} ${HOME}
-	grep bgrc ${bgrc} >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
+	grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
 	echo Done local install to ${HOME}
 }
 
