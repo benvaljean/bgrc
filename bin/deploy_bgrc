@@ -2,11 +2,17 @@
 #deploy_bgrc
 #Deploy bgrc environment to other hosts
 
+
 self="$(basename $0)"
 ssh_known_hosts="${HOME}/.ssh/known_hosts"
-bgrc="${HOME}/.bgrc"
 dirname="$(dirname $0)"
 
+usage()
+{
+	echo -e "deploy_bgrc \nUsage: ${self} -a | -h host | -l [-v] \n-a Use ssh known_hosts to apply to all known hosts\n-h Deploy to single host\n-l Deploy to local environment" 1>&2
+	exit 1
+}
+[[ "$#" == "0" ]] && usage
 
 if [ -f ${HOME}/.bgrc.cfg ]; then
 	. ${HOME}/.bgrc.cfg
@@ -16,18 +22,20 @@ SSH_OPTIONS=${SSH_OPTIONS--o PubkeyAuthentication=yes -o PasswordAuthentication=
 
 
 #Get current version and verify bgrc is present
-if [[ ! -a $bgrc ]]; then
-	if [[ ! -a ${dirname}/../.bgrc ]]; then
-		echo $bgrc not found!
-		exit 1
-	else
-		bgrc="${dirname}/../.bgrc"
+bgrclocations="./.bgrc ${dirname}/../.bgrc ${HOME}/.bgrc"
+bgrc=
+for i in $bgrclocations ; do
+	if [[ -a $i ]]; then
+		bgrc=${i}
+		bgrclocation=${i%/.bgrc}
+		break
 	fi
-else
-	ver=$(grep -o 'bgrc [0-9].*' ${HOME}/.bgrc)
-fi
+done
+[[ -z $bgrc ]] && echo bgrc not found && exit 1
 
-files="${HOME}/.bgrc ${HOME}/.vimrc ${HOME}/.vim ${HOME}/bin ${HOME}/.hushlogin ${HOME}/.screenrc"
+ver=$(grep -o 'bgrc [0-9].*' ${bgrc})
+
+files="${bgrclocation}/.bgrc ${bgrclocation}/.vimrc ${bgrclocation}/.vim ${bgrclocation}/bin ${bgrclocation}/.hushlogin ${bgrclocation}/.screenrc"
 
 do_deploy()
 {
@@ -46,14 +54,6 @@ do_deploy()
 		fi
 	done
 }
-usage()
-{
-	echo -e "deploy_bgrc \nUsage: ${self} -a | -h host | -l [-v] \n-a Use ssh known_hosts to apply to all known hosts\n-h Deploy to single host\n-l Deploy to local environment" 1>&2
-	exit 1
-}
-
-NUMARGS=$#
-[[ $NUMARGS == "0" ]] && usage
 
 version() {
 	echo deploy_bgrc ${ver}
@@ -72,8 +72,6 @@ sshdeployallhosts() {
 }
 
 sshdeploylocal() {
-	[[ ! -a .bgrc ]] && echo Error: Cannot locate .bgrc in current directory or \$PATH && exit 1
-	files=".bgrc .vimrc .vim bin .hushlogin .screenrc"
 	rsync -a --force ${files} ${HOME}
 	grep bgrc ${bgrc} >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
 	echo Done local install to ${HOME}
@@ -99,4 +97,3 @@ while getopts "ah:vl" opt ; do
     esac
 done
 
-[[ "$#" == "0" ]] && usage
