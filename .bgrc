@@ -22,7 +22,7 @@ bgrc() {
 export PAGER=less
 
 #Set default editor to vim if not already set
-[[ -z $EDITOR ]] && which vim &>/dev/null && export EDITOR='/usr/bin/vim'
+[[ -z $EDITOR ]] && whiched=$(which vim 2>/dev/null) && export EDITOR=$whiched
 
 #Check if git installed
 GIT_INSTALLED=0
