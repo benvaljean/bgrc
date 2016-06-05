@@ -35,24 +35,61 @@ done
 
 ver=$(grep -o 'bgrc [0-9].*' ${bgrc})
 
-files="${bgrclocation}/.bgrc ${bgrclocation}/.vimrc ${bgrclocation}/.vim ${bgrclocation}/bin ${bgrclocation}/.hushlogin ${bgrclocation}/.screenrc"
+deploy_bgrc() 
+{	
+	local bgrclocation=$1
+	local files=
+	local errors=0
+	src=
+
+	#Build list of files to copy
+	#Not using arrays to ensure backwards compatibility
+	#Always copy:
+	files=".bgrc bin .hushlogin"
+	#Only copy if bgrc version already present
+
+
+	grep bgvimrc ${HOME}/.vimrc &>/dev/null
+	[[ $? == "0" || $? == "2" ]] && files="${files} .vimrc .vim"
+	grep bgscreenrc ${HOME}/.screenrc &>/dev/null
+	[[ $? == "0" || $? == "2" ]] && files="${files} .screenrc"
+	#Add location to $files
+	for file in ${files} ; do
+		src="${src} ${bgrclocation}/${file}"
+	done
+
+	if which rsync &>/dev/null ; then
+		rsync -aq --force ${src} ${HOME} || errors=$(expr $errors + 1)
+	else
+		scp -r ${src} ${HOME} || errors=$(expr $errors + 1)
+	fi
+
+	grep bgrc ${HOME}/.bashrc &>/dev/null || echo -e "#  Source bgrc\n#  https://github.com/benvaljean/bgrc\n. ${HOME}/.bgrc" >>${HOME}/.bashrc || errors=$(expr $errors + 1)
+	if [[ "$errors" == "0" ]] ; then
+		return 0
+	else
+		return 1
+	fi
+}
 
 do_deploy()
 {
 	for host in "$@" ; do
 		errors=0
 		if which rsync 2>&1 >/dev/null ; then
-			rsync -e "ssh ${SSH_OPTIONS}" -a ${files} ${host}: || errors=$(expr $errors + 1)
+			rsync -e "ssh ${SSH_OPTIONS}" -aq ${files} ${host}:.bgrctemp/ || errors=$(expr $errors + 1)
 		else
-			scp ${SSH_OPTIONS} -r ${files} ${host}: || errors=$(expr $errors + 1)
+			scp ${SSH_OPTIONS} -r ${files} ${host}:.bgrctemp/ || errors=$(expr $errors + 1)
 		fi
-		ssh ${SSH_OPTIONS} ${host} 'grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc' || errors=$(expr $errors + 1)
+
+		ssh ${host} "$(typeset -f deploy_bgrc) ; deploy_bgrc .bgrctemp/" || errors=$(expr $errors + 1)
 		if [[ "$errors" == "0" ]] ; then
 			echo Done $host
 		else
 			echo Error with $host
 		fi
 	done
+
 }
 
 version() {
@@ -72,8 +109,7 @@ sshdeployallhosts() {
 }
 
 sshdeploylocal() {
-	rsync -a --force ${files} ${HOME}
-	grep bgrc ~/.bashrc >/dev/null 2>&1 || echo ". ~/.bgrc" >>~/.bashrc
+	deploy_bgrc ${bgrclocation}
 	echo Done local install to ${HOME}
 }
 
@@ -96,4 +132,3 @@ while getopts "ah:vl" opt ; do
         	;;
     esac
 done
-
