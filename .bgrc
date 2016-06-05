@@ -212,12 +212,7 @@ bglvm(){
 #Post-login icons
 
 #chef managed host
-if [[ $flavour == 'enterprise' ]]; then
-	rpm -qa|grep chef &>/dev/null && printf c
-    #[[ -x /usr/bin/chef-client ]] && printf c
-elif [[ $flavour == 'debian' ]]; then
-	dpkg-query -l '*chef*' &>/dev/null && printf c
-fi
+which chef-client &>/dev/null && printf c
 
 #user has active or detached screens running
 #broken need to use -C if available on only $USER
