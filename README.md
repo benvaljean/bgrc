@@ -1,7 +1,7 @@
 # bgrc
 Improvements or suggestions to your shell experience with extensions useful for sysadmins.
 
-bgrc is a set of improvements and suggestions from the simple defaults in your shell experience; and extensions useful for sysadmins. Currently bash, vim and screen are improved. Feel free to investigate and cherry-pick or trying using `deploy_bgrc` to deploy the whole environment.
+bgrc is a set of improvements and suggestions from the simple defaults in your shell experience; and extensions useful for sysadmins. Improvements are currently available for bash, vim and screen. Investigate and cherry-pick or trying using `deploy_bgrc` to deploy the whole environment.
 
 ## Quickstart
 
@@ -11,12 +11,12 @@ To deploy the whole environment:
 	cd bgrc
 	bin/deploy_bgrc -l
 
-Caution: vim and screen config could be overwritten (bashrc remains intact)
+.screenrc and .vimrc deploy is skipped if your own version is already present
 
 ## Sysadmin extensions
 
 - `bglvm`  Show PV, VG and LV information
-- `bginfo`  Show basic system information
+- `bginfo`  Show basic system information - system model and serial, cpu cores and RAM
 - [Post-login icons](https://github.com/benvaljean/bgrc/wiki/Post-login%20icons) Show a character before the prompt upon login based on criteria eg. you have screens running
 
 ## bgbashrc
@@ -63,4 +63,4 @@ Improvements to screenrc
 ## deploy_bgrc
 
 `deploy_bgrc`
-Deploy all the above to a remote server or locally from a cloned repo. If deployed to an existing non-vanilla account it should be used with cauion as currently it will overwrite your vim and screen config. bashrc config is remained intact.
+Deploy all the above to a remote server or locally from a cloned repo.
