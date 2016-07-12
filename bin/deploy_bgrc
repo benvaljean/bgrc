@@ -74,12 +74,14 @@ deploy_bgrc()
 
 do_deploy()
 {
+	allfiles=".bgrc bin .hushlogin .vimrc .vim .screenrc"
 	for host in "$@" ; do
 		errors=0
+
 		if which rsync 2>&1 >/dev/null ; then
-			rsync -e "ssh ${SSH_OPTIONS}" -aq ${files} ${host}:.bgrctemp/ || errors=$(expr $errors + 1)
+			rsync -e "ssh ${SSH_OPTIONS}" -aq ${allfiles} ${host}:.bgrctemp/ || errors=$(expr $errors + 1)
 		else
-			scp ${SSH_OPTIONS} -r ${files} ${host}:.bgrctemp/ || errors=$(expr $errors + 1)
+			scp ${SSH_OPTIONS} -r ${allfiles} ${host}:.bgrctemp/ || errors=$(expr $errors + 1)
 		fi
 
 		ssh ${host} "$(typeset -f deploy_bgrc) ; deploy_bgrc .bgrctemp/" || errors=$(expr $errors + 1)
