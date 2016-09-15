@@ -20,7 +20,6 @@ fi
 
 SSH_OPTIONS=${SSH_OPTIONS--o PubkeyAuthentication=yes -o PasswordAuthentication=no -o NumberOfPasswordPrompts=0 -o StrictHostKeyChecking=no -o ConnectTimeout=3}
 
-
 #Get current version and verify bgrc is present
 bgrclocations="./.bgrc ${dirname}/../.bgrc ${HOME}/.bgrc"
 bgrc=
@@ -42,17 +41,26 @@ deploy_bgrc()
 	local errors=0
 	src=
 
+	#Get .bgrc.cfg values if present
+	if [ -f ${HOME}/.bgrc.cfg ]; then
+		. ${HOME}/.bgrc.cfg
+	fi
+	BGSCREENRC=${BGSCREENRC-1}
+	BGVIMRC=${BGVIMRC-1}
+
 	#Build list of files to copy
 	#Not using arrays to ensure backwards compatibility
 	#Always copy:
-	files=".bgrc bin .hushlogin"
-	#Only copy if bgrc version already present
-
-
-	grep bgvimrc ${HOME}/.vimrc &>/dev/null
-	[[ $? == "0" || $? == "2" ]] && files="${files} .vimrc .vim"
-	grep bgscreenrc ${HOME}/.screenrc &>/dev/null
-	[[ $? == "0" || $? == "2" ]] && files="${files} .screenrc"
+	files=".bgrc bin .hushlogin .bgrc.cfg"
+	#Only copy if bgrc version already present and cfged to do so in .bgrc.cfg
+	if [[ $BGVIMRC == "1" ]];then
+		grep bgvimrc ${HOME}/.vimrc &>/dev/null
+		[[ $? == "0" || $? == "2" ]] && files="${files} .vimrc .vim"
+	fi
+	if [[ $BGSCREENRC == "1" ]]; then
+		grep bgscreenrc ${HOME}/.screenrc &>/dev/null
+		[[ $? == "0" || $? == "2" ]] && files="${files} .screenrc"
+	fi
 	#Add location to $files
 	for file in ${files} ; do
 		src="${src} ${bgrclocation}/${file}"
@@ -77,7 +85,7 @@ deploy_bgrc()
 
 do_deploy()
 {
-	allfiles=".bgrc bin .hushlogin .vimrc .vim .screenrc"
+	allfiles=".bgrc bin .hushlogin .vimrc .vim .screenrc .bgrc.cfg"
 	for host in "$@" ; do
 		error=0
 
