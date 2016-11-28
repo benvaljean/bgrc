@@ -87,7 +87,7 @@ do_deploy()
 {
 	allfiles=".bgrc bin .hushlogin .vimrc .vim .screenrc .bgrc.cfg"
 	for host in "$@" ; do
-		error=0
+		local errors=0
 
 		if ! rsync -e "ssh ${SSH_OPTIONS}" --exclude .git/ -aq ${allfiles} ${host}:.bgrctemp/ ; then 
 			ssh ${host} mkdir -p .bgrctemp
