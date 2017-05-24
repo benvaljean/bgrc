@@ -31,7 +31,7 @@ git --version &>/dev/null && GIT_INSTALLED=1
 #Do not try to set window title if $TERM is not set as it is probably console and the prompt will look ugly
 case "$TERM" in
 	screen*|xterm*|rxvt*|Eterm*|kterm*|dtterm*|ansi*|cygwin*)
-		PS1='\[\033]0;\u@\h\007\][\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+		PS1='\[\033]0;\h\007\][\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
 	;;
 	*)
 		PS1='[\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
@@ -136,6 +136,9 @@ alias bgdu='sudo du -xsch *'
 alias sshl="ssh-add -l"
 alias wgets="wget --no-check-certificate"
 alias curls="curl -k"
+alias l="less"
+alias v="vim"
+alias s="ssh"
 
 #A screenful of head
 alias hds='head -n $((${LINES} - 4))'
@@ -181,6 +184,9 @@ fi
 hg() {
 	history | grep "$@"
 }
+
+
+
 
 page() {
 	#page for long output
