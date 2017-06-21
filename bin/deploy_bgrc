@@ -61,6 +61,10 @@ deploy_bgrc()
 		grep bgscreenrc ${HOME}/.screenrc &>/dev/null
 		[[ $? == "0" || $? == "2" ]] && files="${files} .screenrc"
 	fi
+	if which git &>/dev/null ; then
+	    grep bggitconfig ${HOME}/.gitconfig &>/dev/null
+	    [[ $? == "0" || $? == "2" ]] && files="${files} .gitconfig"
+	fi
 	#Add location to $files
 	for file in ${files} ; do
 		src="${src} ${bgrclocation}/${file}"
