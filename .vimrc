@@ -52,6 +52,9 @@ cmap Q q
 " allow quick exit no save
 cmap qq q!
 
+"Quit after saving
+cmap w wq
+
 call pathogen#infect()
 
 ""NERDTtree

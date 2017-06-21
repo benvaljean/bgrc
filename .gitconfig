@@ -6,7 +6,7 @@
 [include]
 	path = ~/.gitconfig.local
 [core]
-	pager = vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -
+	pager = vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'set noconfirm' -c 'cmap q q!' -
 [diff]
 	tool = vimdiff
 [merge]
