@@ -89,7 +89,7 @@ deploy_bgrc()
 
 do_deploy()
 {
-	allfiles=".bgrc bin .hushlogin .vimrc .vim .screenrc .bgrc.cfg"
+	allfiles=".bgrc bin .hushlogin .vimrc .vim .screenrc .bgrc.cfg .gitconfig"
 	for host in "$@" ; do
 		local errors=0
 
