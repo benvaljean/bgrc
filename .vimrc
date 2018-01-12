@@ -15,6 +15,7 @@ if &t_Co > 2 || has("gui_running")
   set hlsearch
 endi
 
+set nocompatible
 set autoindent
 set ignorecase
 set smartcase
