@@ -63,6 +63,8 @@ export PATH="$PATH:~/bin:/sbin:/usr/sbin";
 #Extended info displayed by default
 export LESS="-M"
 
+#Long ISO 8601 dates
+export TIME_STYLE=long-iso
 
 platform='unknown'
 flavour='unknown'
