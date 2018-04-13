@@ -18,6 +18,9 @@ bgrc() {
 	[[ -a ~/bin/deploy_bgrc ]] && echo deploy_bgrc installed
 }
 
+#Source bgrc.cfg
+[[ -r ${HOME}/.bgrc.cfg ]] && . ${HOME}/.bgrc.cfg
+
 #Set psql to use less by default
 export PAGER=less
 
