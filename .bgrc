@@ -126,6 +126,19 @@ alias vdir='ls --color=auto --format=long'
 #Shortcut for ssh client config whilst ensuring syntax highlighting is always used
 alias sshconf='vim -c ":setf sshconfig" ~/.ssh/config'
 
+#bgssh-add - auto complete for keys in $defaultsshkeydir
+defaultsshkeydir=${defaultsshkeydir-${HOME}/.ssh}
+keys=$(ls $defaultsshkeydir)
+function _sshaddcomplete() {
+	IFS=$'\n' tmp=( $(compgen -W "$(ls $defaultsshkeydir)" -- "${COMP_WORDS[$COMP_CWORD]}" ))
+	COMPREPLY=( "${tmp[@]// /\ }" )
+}
+complete -o default -F _sshaddcomplete bgssh-add
+
+bgssh-add() {
+	ssh-add ${defaultsshkeydir}/$1
+}
+
 #Ensure environment is maintained with sudo vim to allow vim plugins to work
 alias sv='sudo -E vim'
 
