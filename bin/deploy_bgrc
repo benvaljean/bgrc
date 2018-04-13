@@ -47,7 +47,7 @@ deploy_bgrc()
 	fi
 	BGSCREENRC=${BGSCREENRC-1}
 	BGVIMRC=${BGVIMRC-1}
-
+	sourcelocation=${sourcelocation-${HOME}/.bashrc}
 	#Build list of files to copy
 	#Not using arrays to ensure backwards compatibility
 	#Always copy:
@@ -76,7 +76,7 @@ deploy_bgrc()
 		cp -r ${src} ${HOME} || errors=$(expr $errors + 1)
 	fi
 
-	grep bgrc ${HOME}/.bashrc &>/dev/null || echo -e "#  Source bgrc\n#  https://github.com/benvaljean/bgrc\n. ${HOME}/.bgrc" >>${HOME}/.bashrc || errors=$(expr $errors + 1)
+	grep bgrc ${sourcelocation} &>/dev/null || echo -e "#  Source bgrc\n#  https://github.com/benvaljean/bgrc\n. ${HOME}/.bgrc" >>${sourcelocation} || errors=$(expr $errors + 1)
 	rm -rf .bgrctemp/
 
 	if [[ "$errors" == "0" ]] ; then
