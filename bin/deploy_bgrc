@@ -41,9 +41,9 @@ deploy_bgrc()
 	local errors=0
 	src=
 
-	#Get .bgrc.cfg values if present
-	if [ -f ${HOME}/.bgrc.cfg ]; then
-		. ${HOME}/.bgrc.cfg
+	#Get .bgrc.cfg values
+	if [ -f ${bgrclocation}/.bgrc.cfg ]; then
+		. ${bgrclocation}/.bgrc.cfg
 	fi
 	BGSCREENRC=${BGSCREENRC-1}
 	BGVIMRC=${BGVIMRC-1}
