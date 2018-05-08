@@ -136,6 +136,10 @@ function _sshaddcomplete() {
 complete -o default -F _sshaddcomplete bgssh-add
 
 bgssh-add() {
+	if [[ "bg" == "bg$1" ]] ; then 
+	  ssh-add -l
+	  return
+	fi
 	ssh-add ${defaultsshkeydir}/$1
 }
 
@@ -151,7 +155,6 @@ alias scnew='screen -L'
 alias bgdu='sudo du -xsch *'
 
 #Command shortcuts
-alias sshl="ssh-add -l"
 alias wgets="wget --no-check-certificate"
 alias curls="curl -k"
 alias l="less"
