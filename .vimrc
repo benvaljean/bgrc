@@ -27,8 +27,7 @@ set ruler
 set showcmd		  " show incomplete commands
 
 set copyindent    " copy the previous indentation on autoindenting
-set tabstop=4     " a tab is four spaces
-set shiftwidth=4  " number of spaces to use for autoindenting
+set tabstop=4 shiftwidth=4 expandtab "indent 4 spaces when tab is pressed
 
 set pastetoggle=<F2>
 
