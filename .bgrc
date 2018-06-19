@@ -151,8 +151,14 @@ alias sc='screen -D -R -L'
 #Or create a new session anyway
 alias scnew='screen -L'
 
-#du alias useful for finding large dirs
-alias bgdu='sudo du -xsch *'
+#du improvements, useful for finding large dirs, show sorted output afterwards to give indication of progress
+bgdu() {
+    local tempfile=$(mktemp ~/.bgdu.XXX)
+    sudo du -xsch * | tee $tempfile
+    echo ======== As above but sorted ========
+    cat $tempfile | sort -h
+    rm $tempfile
+}
 
 #Command shortcuts
 alias wgets="wget --no-check-certificate"
