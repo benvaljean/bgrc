@@ -175,6 +175,9 @@ grepr() {
 	grep -r "$@" *
 }
 
+#When invoking openssl on a cert it is usually for this
+alias bgssl='openssl x509 -subject -issuer -dates -noout -in'
+
 #ssh auto complete
 #on ssh client config
 if [ -r ~/.ssh/config ]; then	
