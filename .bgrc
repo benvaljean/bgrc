@@ -61,7 +61,11 @@ export HISTTIMEFORMAT='%F %T '
 #Ignore frequently used commands
 export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls'
 
-export PATH="$PATH:~/bin:/sbin:/usr/sbin";
+#Allow multi-line commands to be saved in history
+shopt -s cmdhist
+shopt -s lithist
+
+export PATH="$PATH:~/bin:/sbin:/usr/sbin:/usr/local/bin";
 
 #Extended info displayed by default
 export LESS="-M"
