@@ -23,6 +23,7 @@ l = log --decorate --graph
 s = status
 c = commit -v
 co = checkout
+cc = checkout master
 m = merge
 b = branch -vv
 d = diff
