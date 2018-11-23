@@ -167,9 +167,13 @@ bgdu() {
 
 #Show swap usage 
 bgswap() {
-for proc in /proc/*
-    do cat $proc/smaps 2>/dev/null | awk '/Swap/{swap+=$2}END{print swap "\t'`echo $proc`'\t'`readlink $proc/exe|awk '{print $1}' `'" }'
-done | sort -n | awk '{total+=$1}/[0-9]/;END{print total "\tTotal (kB)"}'
+if [[ $platform == "linux" ]]; then
+    for proc in /proc/*
+        do cat $proc/smaps 2>/dev/null | awk '/Swap/{swap+=$2}END{print swap "\t'`echo $proc`'\t'`readlink $proc/exe|awk '{print $1}' `'" }'
+    done | sort -n | awk '{total+=$1}/[0-9]/;END{print total "\tTotal (kB)"}'
+else
+    echo Not Implemented
+fi
 }
 
 #Command shortcuts
