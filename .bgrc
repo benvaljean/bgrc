@@ -132,9 +132,10 @@ alias sshconf='vim -c ":setf sshconfig" ~/.ssh/config'
 
 #bgssh-add - auto complete for keys in $defaultsshkeydir
 defaultsshkeydir=${defaultsshkeydir-${HOME}/.ssh}
+mkdir -p $defaultsshkeydir
 keys=$(ls $defaultsshkeydir)
 function _sshaddcomplete() {
-	IFS=$'\n' tmp=( $(compgen -W "$(ls $defaultsshkeydir)" -- "${COMP_WORDS[$COMP_CWORD]}" ))
+	IFS=$'\n' tmp=( $(compgen -W "${keys}" -- "${COMP_WORDS[$COMP_CWORD]}" ))
 	COMPREPLY=( "${tmp[@]// /\ }" )
 }
 complete -o default -F _sshaddcomplete bgssh-add
