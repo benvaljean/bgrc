@@ -58,6 +58,29 @@ export HISTIGNORE=$'[ \t]*:&:[fb]g:exit:ls'
 shopt -s cmdhist
 shopt -s lithist
 
+#Per-session bash history and write it upon every command so it is never lost
+history_session_dir=${history_session_dir-${HOME}/.bash_history_sessions}
+history_session_file=$(date "+%Y-%m-%d-%H.%M.%S")
+#history_session_file=session.$$.$(LC_CTYPE=C tr -dc A-Za-z0-9< /dev/urandom | head -c 4)
+mkdir -p $history_session_dir
+
+add_last_command() { 
+    history -a ${history_session_dir}/${history_session_file}
+    #history 1| awk '{ $1=""; print $0 }' >> ${history_session_dir}/${history_session_file}
+}
+#Add to $PROMPT_COMMAND whilst preserving existing, if any
+[[ $PROMPT_COMMAND == "add_last_command" ]] || PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'add_last_command'
+
+#Show history for this session only by manually parsing the date
+history-current-session() { 
+paste -sd '#\n' ${history_session_dir}/${history_session_file} |gawk -F"#" '{d=$2 ; $2="";print strftime("%d/%m/%y %T",d)" "$0}'
+}
+alias hc=history-current-session
+hgg() {
+    grep -r "$@" ${history_session_dir}/*
+}
+
+#Add to PATH
 export PATH="$PATH:~/bin:/sbin:/usr/sbin:/usr/local/bin";
 
 #Extended info displayed by default
