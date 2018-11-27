@@ -11,7 +11,7 @@
 #[[ "$-" != *i* ]] && return
 
 bgrc() {
-	echo bgrc 2.23.1 2018-04-18
+	echo bgrc 2.24 2018-11-27
 	[[ -a ~/.bgrc ]] && echo bgbashrc installed
 	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
 	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
@@ -27,10 +27,6 @@ export PAGER=less
 #Set default editor to vim if not already set
 [[ -z $EDITOR ]] && whiched=$(which vim 2>/dev/null) && export EDITOR=$whiched
 
-#Check if git installed
-GIT_INSTALLED=0
-git --version &>/dev/null && GIT_INSTALLED=1
-
 #Do not try to set window title if $TERM is not set as it is probably console and the prompt will look ugly
 case "$TERM" in
 	screen*|xterm*|rxvt*|Eterm*|kterm*|dtterm*|ansi*|cygwin*)
@@ -40,9 +36,6 @@ case "$TERM" in
 		PS1='[\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
 	;;
 esac
-
-#Consider using this for git prompt in future release
-#https://github.com/git/git/blob/8976500cbbb13270398d3b3e07a17b8cc7bff43f/contrib/completion/git-prompt.sh
 
 #Allow autocd (cd dir by just typing it) but do not error if the current version of bash does not support it
 shopt -s autocd 2>/dev/null && printf a
@@ -207,24 +200,6 @@ for file in ~/.ssh/known_hosts /etc/ssh/ssh_known_hosts ; do
 done
 
 [[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc sftp
-
-#git improvements
-if [[ $GIT_INSTALLED == "1" ]]; then
-	#simple git auto complete (tested with 2.3.2)
-	#consider git-completion if you would would like something more advanced
-	git_autocomplete_word_list="add bisect checkout clone commit diff fetch grep init log merge mv pull push rebase reset rm show status tag"
-	function _gitcomplete()
-	{
-    	case $COMP_CWORD in
-        	1) COMPREPLY=($(compgen -W "$git_autocomplete_word_list" -- ${COMP_WORDS[COMP_CWORD]}));;
-        	*) COMPREPLY=($(compgen -f -- "${COMP_WORDS[COMP_CWORD]}" ));;
-    	esac
-	}
-	complete -F _gitcomplete git
-
-	#use vim as default pager with ansi escape sequences, if not already set by user
-	grep "pager =" ${HOME}/.gitconfig &>/dev/null || git config --global core.pager "vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -"
-fi
 
 #grep through history shortcut
 hg() {
