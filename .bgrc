@@ -267,5 +267,4 @@ bglvm(){
 which chef-client &>/dev/null && printf c
 
 #user has active or detached screens running
-#broken need to use -C if available on only $USER
-pgrep -U $USER screen &>/dev/null && printf s
+command screen -ls|egrep 'There (is a|are) screens? on' &>/dev/null && printf s
