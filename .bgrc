@@ -11,7 +11,7 @@
 #[[ "$-" != *i* ]] && return
 
 bgrc() {
-	echo bgrc 2.24 2018-11-27
+	echo bgrc 2.25 2019-01-04
 	[[ -a ~/.bgrc ]] && echo bgbashrc installed
 	grep bgvimrc ~/.vimrc >/dev/null 2>&1 && echo bgvimrc installed
 	grep bgscreenrc ~/.screenrc >/dev/null 2>&1 && echo bgscreenrc installed
@@ -143,6 +143,25 @@ bgssh-add() {
 
 #Ensure environment is maintained with sudo vim to allow vim plugins to work
 alias sv='sudo -E vim'
+
+#Quick pass generation
+alias genpass='LC_CTYPE=C tr -dc A-Za-z0-9 < /dev/urandom | tr -d Il1 | head -c 32'
+
+#Generate random words
+#Using modulus to determine range is not completely random
+#http://stackoverflow.com/questions/1194882/generate-random-number#comment36748687_1195035
+genwords() {
+    genwordscount=${genwordscount-5}
+    if [[ ! $genwordscount =~ ^[0-9]+$ ]]; then
+        echo Error: \$genwordscount is not a positive integer! >&2
+        return
+    fi
+    for i in $(seq 1 ${genwordscount}); do 
+        dict=${dict-/usr/share/dict/words}
+        lines=$(wc -l $dict|prow 1)
+        sed -n $[$RANDOM$RANDOM$RANDOM % $lines]p $dict
+    done
+}
 
 #Screen attach here and now and enable logging
 alias sc='screen -D -R -L'
