@@ -61,7 +61,6 @@ shopt -s lithist
 #Per-session bash history and write it upon every command so it is never lost
 history_session_dir=${history_session_dir-${HOME}/.bash_history_sessions}
 history_session_file=$(date "+%Y-%m-%d-%H.%M.%S")
-#history_session_file=session.$$.$(LC_CTYPE=C tr -dc A-Za-z0-9< /dev/urandom | head -c 4)
 mkdir -p $history_session_dir
 
 add_last_command() { 
@@ -71,14 +70,24 @@ add_last_command() {
 #Add to $PROMPT_COMMAND whilst preserving existing, if any
 [[ $PROMPT_COMMAND == "add_last_command" ]] || PROMPT_COMMAND=${PROMPT_COMMAND:+"$PROMPT_COMMAND; "}'add_last_command'
 
-#Show history for this session only by manually parsing the date
+#Manually process history files, this prevents moving individually into $HISTFILE temporarily and allows history-global-grep
+process-history() {
+   rawhistory=$1
+   paste -sd '#\n' $rawhistory|gawk -F"#" '{d=$2 ; $2="";print strftime("%Y-%m-%d %T",d)" "$0}'|sort -k1,1
+}
 history-current-session() { 
-paste -sd '#\n' ${history_session_dir}/${history_session_file} |gawk -F"#" '{d=$2 ; $2="";print strftime("%d/%m/%y %T",d)" "$0}'
+    process-history ${history_session_dir}/${history_session_file}
 }
 alias hc=history-current-session
-hgg() {
-    grep -r "$@" ${history_session_dir}/*
+
+#Search entire session history
+history-global-grep() {
+    local tempfile=$(mktemp ~/.hgg.XXX)
+    find ${history_session_dir} -type f -name '20*' |xargs grep -hr -B1 "$@"|sed '/^--$/d' >$tempfile
+    process-history $tempfile
+    rm $tempfile
 }
+alias hgg=history-global-grep
 
 #Add to PATH
 export PATH="$PATH:~/bin:/sbin:/usr/sbin:/usr/local/bin";
