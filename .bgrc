@@ -261,4 +261,4 @@ bglvm(){
 which chef-client &>/dev/null && printf c
 
 #user has active or detached screens running
-command screen -ls|egrep 'There (is a|are) screens? on' &>/dev/null && printf s
+[[ -x $(which screen) ]] && command screen -ls|egrep 'There (is a|are) screens? on' &>/dev/null && printf s
