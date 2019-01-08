@@ -71,16 +71,10 @@ flavour='unknown'
 unamestr=$(uname)
 if [[ "$unamestr" == 'Linux' ]]; then
     platform='linux'
-    physRAMGb=$(command free -g|grep Mem|awk '{print $2}')
-    logicalcpucores=$(cat /proc/cpuinfo|grep -c processor)
-    physicalcpucores=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
-	[[ -f /etc/redhat-release ]] && flavour='enterprise'
-	[[ -f /etc/debian_version ]] && flavour='debian'
+    [[ -f /etc/redhat-release ]] && flavour='enterprise'
+    [[ -f /etc/debian_version ]] && flavour='debian'
 elif [[ "$unamestr" == 'FreeBSD' ]] || [[ "$unamestr" == 'Darwin' ]] ; then
     platform='freebsd'
-    physRAMGb=$(($(sysctl hw.memsize|cut -d' ' -f2)/1024/1024/1024))
-    logicalcpucores=$(sysctl hw.logicalcpu|cut -d' ' -f2)
-    physicalcpucores=$(sysctl hw.physicalcpu|cut -d' ' -f2)
 elif [[ "$unamestr" == 'SunOS' ]]; then
    platform='SunOS'
 fi
@@ -92,7 +86,7 @@ bginfo() {
     else
         #Check if dmidecode is present and can run sudo
         #Gracefully continue if sudo not available
-        if [[ -x /usr/sbin/dmidecode ]] && sudo -v 2>/dev/null ; then
+        if [[ -x /usr/sbin/dmidecode ]] && sudo -vn 2>/dev/null ; then
             local dmidecode='/usr/sbin/dmidecode'
             local dmidecodestrings='system-manufacturer system-product-name system-serial-number'
             declare -a dmidecodedata
@@ -101,6 +95,17 @@ bginfo() {
                 dmidecodedata+=$(sudo $dmidecode -s $i; printf " ")
             done
             echo ${dmidecodedata[*]}
+        fi
+        #Repeat some logic here as we expect bginfo to run separately
+        unamestr=$(uname)
+        if [[ "$unamestr" == 'Linux' ]]; then
+            physRAMGb=$(command free -g|grep Mem|awk '{print $2}')
+            logicalcpucores=$(cat /proc/cpuinfo|grep -c processor)
+            physicalcpucores=$(cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l)
+        elif [[ "$unamestr" == 'FreeBSD' ]] || [[ "$unamestr" == 'Darwin' ]] ; then
+            physRAMGb=$(($(sysctl hw.memsize|cut -d' ' -f2)/1024/1024/1024))
+            logicalcpucores=$(sysctl hw.logicalcpu|cut -d' ' -f2)
+            physicalcpucores=$(sysctl hw.physicalcpu|cut -d' ' -f2)
         fi
         if [[ -z $logicalcpucores ]]; then
         	echo Not available 
