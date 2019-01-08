@@ -90,7 +90,9 @@ bginfo() {
         #TODO Add Solaris support for mem/CPU and use smbios instead of dmidecode
         echo Not implemented
     else
-        if [[ -x /usr/sbin/dmidecode ]]; then
+        #Check if dmidecode is present and can run sudo
+        #Gracefully continue if sudo not available
+        if [[ -x /usr/sbin/dmidecode ]] && sudo -v 2>/dev/null ; then
             local dmidecode='/usr/sbin/dmidecode'
             local dmidecodestrings='system-manufacturer system-product-name system-serial-number'
             declare -a dmidecodedata
