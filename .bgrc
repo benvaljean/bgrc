@@ -79,6 +79,10 @@ history-current-session() {
     process-history ${history_session_dir}/${history_session_file}
 }
 alias hc=history-current-session
+history-current-grep() {
+    history-current-session | grep "$@"
+}
+alias hcg=history-current-grep
 
 #Search entire session history
 history-global-grep() {
@@ -88,6 +92,11 @@ history-global-grep() {
     rm $tempfile
 }
 alias hgg=history-global-grep
+history-global-grep-recent() {
+    history-global-grep "$@" | tail -20
+}
+alias hggr=history-global-grep-recent
+
 
 #Add to PATH
 export PATH="$PATH:~/bin:/sbin:/usr/sbin:/usr/local/bin";
