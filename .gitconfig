@@ -1,20 +1,22 @@
 # bggitconfig
 # https://github.com/benvaljean/bgrc
-#
-# Caution: Manual changes are lost when upgrading
 
 [include]
-	path = ~/.gitconfig.local
+    path = ~/.gitconfig.local
+[push]
+	default = matching
 [core]
 	pager = vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'set noconfirm' -c 'cmap q q!' -
+#[http]
+#	proxy = socks5://127.0.0.1:9150
 [diff]
-	tool = vimdiff
+    tool = vimdiff
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 [difftool]
-	prompt = false
+    prompt = false
 [push]
-	default = simple
+    default = simple
 [alias]
 change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ $`echo $VAR` = \\\"$OLD\\\" ]]; then export $VAR=\\\"$NEW\\\"; fi\" $@; }; f "
 find-file = "!for branch in $(git for-each-ref --format=\"%(refname)\" refs/heads); do if git ls-tree -r --name-only $branch | grep \"$1\" > /dev/null; then  echo \"${branch}:\"; git ls-tree -r --name-only $branch | nl -bn -w3 | grep \"$1\"; fi; done; :"
@@ -24,21 +26,29 @@ s = status
 c = commit -v
 co = checkout
 cc = checkout master
+cm = checkout master
+cl = checkout -
 m = merge
 b = branch -vv
 d = diff
 ds = diff --staged
+cp = cherry-pick
+p = push
 
 #https://github.com/alikins/gitconfig/blob/master/gitconfig
 # commits not pushed to $1, master by default
 unpushed = cherry -v
 # url of origin, about 99% of what I use git config --list for
 cloneurl = config --get remote.origin.url
-	
+
 
 amend = commit --amend
 r = rebase -i
+r5 = rebase -i HEAD~5
+rebm = rebase -i master
 unstage = reset --
+discard = checkout --
+dis = checkout --
 
 # from http://blog.blindgaenger.net/advanced_git_aliases.html
 alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ = \\2/' | sort
