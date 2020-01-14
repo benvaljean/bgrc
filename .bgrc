@@ -242,6 +242,8 @@ alias curls="curl -k"
 alias l="less"
 alias v="vim"
 alias s="ssh"
+alias ggg="git commit -v -a"
+alias gggg="git commit -v -a -m iiiiii"
 
 #A screenful of head
 alias hds='head -n $((${LINES} - 4))'
