@@ -218,8 +218,13 @@ alias scnew='screen -L'
 
 #du improvements, useful for finding large dirs, show sorted output afterwards to give indication of progress
 bgdu() {
+    if [[ -x $(which sudo &>/dev/null) ]] ; then
+    	du="sudo du"
+    else
+    	du="du"
+    fi
     local tempfile=$(mktemp ~/.bgdu.XXX)
-    sudo du -xsch .[!.]* * | tee $tempfile
+    $du -xsch .[!.]* * | tee $tempfile
     echo ======== As above but sorted ========
     cat $tempfile | sort -h
     rm $tempfile
