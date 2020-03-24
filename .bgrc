@@ -250,6 +250,14 @@ alias s="ssh"
 alias ggg="git commit -v -a"
 alias gggg="git commit -v -a -m iiiiii"
 
+#Revert file mode changes in git
+git-revert-modes() {
+git diff -p \
+    | grep -E '^(diff|old mode|new mode)' \
+    | sed -e 's/^old/NEW/;s/^new/old/;s/^NEW/new/' \
+    | git apply
+}
+
 #A screenful of head
 alias hds='head -n $((${LINES} - 4))'
 
