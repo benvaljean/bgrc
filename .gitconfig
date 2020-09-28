@@ -52,3 +52,5 @@ dis = checkout --
 
 # from http://blog.blindgaenger.net/advanced_git_aliases.html
 alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ = \\2/' | sort
+[pull]
+	ff = only
