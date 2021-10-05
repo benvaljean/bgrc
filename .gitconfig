@@ -21,8 +21,10 @@
 change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ $`echo $VAR` = \\\"$OLD\\\" ]]; then export $VAR=\\\"$NEW\\\"; fi\" $@; }; f "
 find-file = "!for branch in $(git for-each-ref --format=\"%(refname)\" refs/heads); do if git ls-tree -r --name-only $branch | grep \"$1\" > /dev/null; then  echo \"${branch}:\"; git ls-tree -r --name-only $branch | nl -bn -w3 | grep \"$1\"; fi; done; :"
 
-l = log --decorate --graph
+l = log --decorate --graph --name-status
 s = status
+sh = show
+shh = show HEAD
 c = commit -v
 co = checkout
 cc = checkout master
@@ -34,6 +36,7 @@ d = diff
 ds = diff --staged
 cp = cherry-pick
 p = push
+po = push -u origin HEAD
 
 #https://github.com/alikins/gitconfig/blob/master/gitconfig
 # commits not pushed to $1, master by default
