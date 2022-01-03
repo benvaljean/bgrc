@@ -1,0 +1,32 @@
+alias k=kubectl
+
+complete -F __start_kubectl k
+
+alias kgp='kubectl get pods'
+
+#kube get pods with grep
+kgpg() {
+    if [[ -z $1 ]]; then
+        kubectl get pods
+    else
+        kubectl get pods | grep $1
+    fi
+}
+alias kdp='kubectl describe pod'
+alias kgn='kubectl get ns'
+kssh() {
+    kubectl exec -it $1 -- ${2:-/bin/bash}
+}
+alias kuse='kubectl config use-context'
+alias kwhoami='kubectl config current-context'
+alias kcontexts='kubectl config get-contexts'
+kns() {
+    kubectl config set-context --current --namespace=${1}
+}
+
+# k port-forward $(kgp|grep cloudwatch|prow 1) 8085:9106
+
+kpfwd () {
+    #kpfwd pod-match-contains pod-port
+    kubectl port-forward $(kubectl get pods|grep ${1}|prow 1) 8085:${2}
+}
