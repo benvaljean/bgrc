@@ -283,6 +283,13 @@ done
 
 [[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc sftp
 
+# Use homebrew bash completion
+if which brew >/dev/null && [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+fi
+
+[ -f ${HOME}/git/bgrc/kubectl.aliases ] && . ${HOME}/git/bgrc/kubectl.aliases
+
 #grep through history shortcut
 hg() {
 	history | grep "$@"
