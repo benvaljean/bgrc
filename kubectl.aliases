@@ -15,7 +15,16 @@ kgpg() {
 alias kdp='kubectl describe pod'
 alias kgn='kubectl get ns'
 kssh() {
-    kubectl exec -it $1 -- ${2:-/bin/bash}
+    if [[ $# == 0 ]]; then
+        echo -e "kssh pod-name [[container]] [[shell]]\nshell defaults to /bin/bash , container defaults to k8s selection"
+        return
+    fi
+    if [[ $# == 2 ]] || [[ $# == 1 ]]; then
+        kubectl exec -it $1 -- ${2:-/bin/bash}
+    fi
+    if [[ $# == 3 ]]; then
+        kubectl exec -it $1 -c $3 -- ${2:-/bin/bash}
+    fi
 }
 alias kuse='kubectl config use-context'
 alias kwhoami='kubectl config current-context'
