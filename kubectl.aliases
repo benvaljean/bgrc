@@ -1,8 +1,11 @@
+#!/bin/bash
+
 alias k=kubectl
 
 complete -F __start_kubectl k
 
 alias kgp='kubectl get pods'
+alias kgs='kubectl get svc'
 
 #kube get pods with grep
 kgpg() {
@@ -13,6 +16,7 @@ kgpg() {
     fi
 }
 alias kdp='kubectl describe pod'
+alias kds='kubectl describe svc'
 alias kgn='kubectl get ns'
 kssh() {
     if [[ $# == 0 ]]; then
