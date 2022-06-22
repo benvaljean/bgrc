@@ -325,6 +325,10 @@ bglvm(){
     sudo lvdisplay -C
 }
 
+fif(){
+    find . -type f -name \**${1}\*
+}
+
 #Post-login icons
 
 #chef managed host
