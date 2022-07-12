@@ -4,6 +4,9 @@ alias k=kubectl
 
 complete -F __start_kubectl k
 
+alias kg='kubectl get'
+alias kd='kubectl describe'
+
 alias kgp='kubectl get pods'
 alias kgs='kubectl get svc'
 
