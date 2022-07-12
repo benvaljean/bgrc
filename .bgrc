@@ -97,8 +97,7 @@ history-global-grep-recent() {
 }
 alias hggr=history-global-grep-recent
 
-
-#Add to PATH
+#Add additional bin dirs to PATH
 export PATH="$PATH:~/bin:/sbin:/usr/sbin:/usr/local/bin";
 
 #Extended info displayed by default
@@ -283,9 +282,11 @@ done
 
 [[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc sftp
 
-# Use homebrew bash completion
-if which brew >/dev/null && [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
+if which brew >/dev/null; then
+    # Use homebrew bash completion
+    [ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
+    # Use homebrew openssh if available
+    [[ -d $(brew --prefix)/opt/openssh/bin ]] && export PATH="$(brew --prefix)/opt/openssh/bin:$PATH"  # Using brew --preix openssh causes a delay if not installed
 fi
 
 [ -f ${HOME}/git/bgrc/kubectl.aliases ] && . ${HOME}/git/bgrc/kubectl.aliases
