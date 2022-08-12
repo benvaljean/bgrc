@@ -52,8 +52,9 @@ cmap Q q
 " allow quick exit no save
 cmap qq q!
 
-"Quit after saving
-cmap w wq
+map <F3> :q<CR>
+map <F4> :wq<CR>
+inoremap <F4> <esc>:wq<CR>
 
 call pathogen#infect()
 
