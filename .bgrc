@@ -348,6 +348,9 @@ fifg(){
     find . -type f $find_exclusions -name \**${1}\* -exec grep ${2} {} /dev/null \;
 }
 
+#Remap ~ to ` to avoid pressing shift
+bind '"`": "~"'
+
 #Post-login icons
 
 #chef managed host
