@@ -286,8 +286,12 @@ done
 [[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc sftp
 
 if which brew >/dev/null; then
-    # Use homebrew bash completion
-    [ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
+    # Use homebrew bash completion, handle older version
+    if [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]]; then
+        . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+    elif [[ -r $(brew --prefix)/etc/bash_completion ]]; then
+        . $(brew --prefix)/etc/bash_completion
+    fi
     # Use homebrew openssh if available
     [[ -d $(brew --prefix)/opt/openssh/bin ]] && export PATH="$(brew --prefix)/opt/openssh/bin:$PATH"  # Using brew --preix openssh causes a delay if not installed
 fi
