@@ -333,8 +333,19 @@ bglvm(){
     sudo lvdisplay -C
 }
 
+find_exclusions='-not -path "*.terragrunt-cache*" -not -path "*.git*"'
+
 fif(){
-    find . -type f -name \**${1}\*
+    #FInd File
+    find . $find_exclusions -type f -name \**${1}\*
+}
+fifg(){
+    #Find File with Grep
+    if [[ "$#" == "0" ]]; then
+        echo fifg Usage: filename-pattern grep-pattern
+        return
+    fi
+    find . -type f $find_exclusions -name \**${1}\* -exec grep ${2} {} /dev/null \;
 }
 
 #Post-login icons
