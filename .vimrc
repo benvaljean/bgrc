@@ -56,8 +56,6 @@ map <F3> :q<CR>
 map <F4> :wq<CR>
 inoremap <F4> <esc>:wq<CR>
 
-call pathogen#infect()
-
 ""NERDTtree
 " Autoload NERDTree if no file is specificed
 autocmd StdinReadPre * let s:std_in=1
@@ -82,3 +80,4 @@ colorscheme solarized
 "To enable  :set list
 "To disable  :set nolist
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+
