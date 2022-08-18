@@ -258,7 +258,7 @@ git diff -p \
 }
 
 #Always allow cd to git dir
-[[ -d ${HOME}/git ]] && export CDPATH=".:${HOME}/git"
+[[ -d ${HOME}/git ]] && CDPATH=".:${HOME}/git"
 
 #A screenful of head
 alias hds='head -n $((${LINES} - 4))'
