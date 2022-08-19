@@ -10,6 +10,8 @@ alias k=kubectl
 
 complete -F __start_kubectl k
 
+alias kconf='${EDITOR} ${HOME}/.kube/config'
+
 alias kg='kubectl get'
 alias kd='kubectl describe'
 
@@ -27,6 +29,10 @@ kgpg() {
 alias kdp='kubectl describe pod'
 alias kds='kubectl describe svc'
 alias kgn='kubectl get ns'
+
+alias kgi='kubectl get ingress'
+alias kgia='kubectl get ingress -A'
+
 kssh() {
     if [[ $# == 0 ]]; then
         echo -e "kssh pod-name [[container]] [[shell]]\nshell defaults to /bin/bash , container defaults to k8s selection"
@@ -39,14 +45,13 @@ kssh() {
         kubectl exec -it $1 -c $3 -- ${2:-/bin/bash}
     fi
 }
+
 alias kuse='kubectl config use-context'
-alias kwhoami='kubectl config current-context'
+alias kwhoami='echo "$(kubectl config current-context | tr -d '\r')$(kubectl config view --minify | grep namespace | tr -d '\r')"'
 alias kcontexts='kubectl config get-contexts'
 kns() {
     kubectl config set-context --current --namespace=${1}
 }
-
-# k port-forward $(kgp|grep cloudwatch|prow 1) 8085:9106
 
 kpfwd () {
     #kpfwd pod-match-contains pod-port
