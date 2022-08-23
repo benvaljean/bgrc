@@ -21,14 +21,16 @@
 change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ $`echo $VAR` = \\\"$OLD\\\" ]]; then export $VAR=\\\"$NEW\\\"; fi\" $@; }; f "
 find-file = "!for branch in $(git for-each-ref --format=\"%(refname)\" refs/heads); do if git ls-tree -r --name-only $branch | grep \"$1\" > /dev/null; then  echo \"${branch}:\"; git ls-tree -r --name-only $branch | nl -bn -w3 | grep \"$1\"; fi; done; :"
 
+# https://stackoverflow.com/a/67672350/2115140
+master-branch = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
+
 l = log --decorate --graph --name-status
 s = status -s -b
 sh = show
-shh = show HEAD
 c = commit -v
 co = checkout
-cc = checkout master
-cm = checkout master
+cc = cm
+cm = "!f(){ git checkout $(git master-branch) $@;}; f"
 cl = checkout -
 m = merge
 b = branch -vv
@@ -49,7 +51,7 @@ cloneurl = config --get remote.origin.url
 amend = commit --amend
 r = rebase -i
 r5 = rebase -i HEAD~5
-rebm = rebase -i master
+rebm = "!f(){ git rebase -i $(git master-branch) ;}; f"
 unstage = reset --
 discard = checkout --
 dis = checkout --
