@@ -6,7 +6,9 @@
 [push]
 	default = matching
 [core]
-	pager = vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'set noconfirm' -c 'cmap q q!' -
+    #pager = cat
+    #pager = vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'set noconfirm' -c 'cmap q q!' -
+    pager = less -r
 #[http]
 #	proxy = socks5://127.0.0.1:9150
 [diff]
@@ -15,6 +17,8 @@
     tool = vimdiff
 [difftool]
     prompt = false
+[branch]
+	sort = committerdate
 [push]
     default = simple
 [alias]
@@ -33,7 +37,7 @@ cc = cm
 cm = "!f(){ git checkout $(git master-branch) $@;}; f"
 cl = checkout -
 m = merge
-b = branch -vv
+b = !git --no-pager branch -vv
 d = diff
 ds = diff --staged
 cp = cherry-pick
