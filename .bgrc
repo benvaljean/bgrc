@@ -30,10 +30,10 @@ export PAGER=less
 #Do not try to set window title if $TERM is not set as it is probably console and the prompt will look ugly
 case "$TERM" in
 	screen*|xterm*|rxvt*|Eterm*|kterm*|dtterm*|ansi*|cygwin*)
-		PS1='\[\033]0;\h\007\][\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+		PS1='\[\033]0;\h\007\][$(status-colour $?)\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
 	;;
 	*)
-		PS1='[\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
+        PS1='[$(status-colour $?)\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]]\$ '
 	;;
 esac
 
@@ -350,6 +350,14 @@ fifg(){
 
 #Remap ~ to ` to avoid pressing shift
 bind '"`": "~"'
+
+status-colour() {
+    if [[ $1 > 0 ]]; then
+        printf '\033[01;31m'
+    else
+        printf '\033[01;32m'
+    fi
+}
 
 #Post-login icons
 
