@@ -32,6 +32,7 @@ alias kgn='kubectl get ns'
 
 alias kgi='kubectl get ingress'
 alias kgia='kubectl get ingress -A'
+alias kdi='kd ingress'
 
 kssh() {
     if [[ $# == 0 ]]; then
