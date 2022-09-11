@@ -4,3 +4,9 @@
 [submodule ".vim/pack/vim-plugins/start/vim-colors-solarized"]
 	path = .vim/pack/vim-plugins/start/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized.git
+[submodule ".vim/pack/vim-plugins/start/vim-airline"]
+	path = .vim/pack/vim-plugins/start/vim-airline
+	url = https://github.com/vim-airline/vim-airline
+[submodule ".vim/pack/vim-plugins/start/vim-commentary"]
+	path = .vim/pack/vim-plugins/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary
