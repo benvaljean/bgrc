@@ -285,7 +285,7 @@ done
 
 [[ -n $ssh_autocomplete_word_list ]] && complete -W "$ssh_autocomplete_word_list" ssh scp deploy_bgrc sftp
 
-if which brew >/dev/null; then
+if which brew &>/dev/null; then
     # Use homebrew bash completion, handle older version
     if [[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]]; then
         . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
