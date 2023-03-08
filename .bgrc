@@ -360,6 +360,20 @@ status-colour() {
     fi
 }
 
+wslmount() {
+    # Mount Windows drives within WSL the preferred way
+    grep -qi -- '-WSL' /proc/sys/kernel/osrelease || critial This is not WSL  # https://stackoverflow.com/a/68938430/2115140
+    sudo mount -t drvfs ${1}: /mnt/${1} -o uid=1000,gid=1000
+}
+
+critical() {
+    echo "$@" 1>&2
+    exit 1
+}
+
+export GPG_TTY=$(tty)
+
+
 #Post-login icons
 
 #chef managed host
