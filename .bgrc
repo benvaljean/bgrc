@@ -38,8 +38,8 @@ case "$TERM" in
 esac
 
 COLOUR_RESET='\[\033[m\]'
-COLOUR_RED='\033[01;31m'
-COLOUR_GREEN='\033[01;32m'
+COLOUR_RED='\[\033[01;31m\]'
+COLOUR_GREEN='\[\033[01;32m\]'
 COLOUR_LIGHT_BLUE='\[\033[01;34m\]'
 build-prompt() {
     if [[ $? == 0 ]]; then
