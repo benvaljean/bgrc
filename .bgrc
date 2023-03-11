@@ -31,9 +31,11 @@ export PAGER=less
 case "$TERM" in
 	screen*|xterm*|rxvt*|Eterm*|kterm*|dtterm*|ansi*|cygwin*)
 		SET_WINDOW_TITLE='\[\033]0;\h\007\]'
+        GIT_PROMPT_ENABLED=1
 	;;
 	*)
         SET_WINDOW_TITLE=''
+        GIT_PROMPT_ENABLED=0
 	;;
 esac
 
@@ -43,7 +45,6 @@ COLOUR_GREEN='\[\033[01;32m\]'
 COLOUR_LIGHT_BLUE='\[\033[01;34m\]'
 build-prompt() {
     if [[ $? == 0 ]]; then
-    #if [ $? -eq 0 ]; then
         local userhost="${COLOUR_GREEN}\u@\h${COLOUR_RESET}"
     else
         local userhost="${COLOUR_RED}\u@\h${COLOUR_RESET}"
@@ -51,7 +52,11 @@ build-prompt() {
 
     local cwd="${COLOUR_LIGHT_BLUE}\w${COLOUR_RESET}"
 
-    PS1="${SET_WINDOW_TITLE}[${userhost} ${cwd}]\$ "
+    if [[ $GIT_PROMPT_ENABLED == 1 ]]; then
+        local gitprompt=$(~/git/bgrc/gitprompt.sh)
+    fi
+
+    PS1="${SET_WINDOW_TITLE}[${userhost} ${gitprompt}${cwd}]\$ "
 
 }
 
