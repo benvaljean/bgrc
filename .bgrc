@@ -31,11 +31,11 @@ export PAGER=less
 case "$TERM" in
 	screen*|xterm*|rxvt*|Eterm*|kterm*|dtterm*|ansi*|cygwin*)
 		SET_WINDOW_TITLE='\[\033]0;\h\007\]'
-        GIT_PROMPT_ENABLED=1
+        EXTRA_PROMPT_FEATURES=1
 	;;
 	*)
         SET_WINDOW_TITLE=''
-        GIT_PROMPT_ENABLED=0
+        EXTRA_PROMPT_FEATURES=0
 	;;
 esac
 
@@ -52,11 +52,14 @@ build-prompt() {
 
     local cwd="${COLOUR_LIGHT_BLUE}\w${COLOUR_RESET}"
 
-    if [[ $GIT_PROMPT_ENABLED == 1 ]]; then
+    if [[ $EXTRA_PROMPT_FEATURES == 1 ]]; then
         local gitprompt=$(~/git/bgrc/gitprompt.sh)
+        if [ ! -z $VIRTUAL_ENV ]; then
+            local venv="🐍$(basename "$(dirname "$VIRTUAL_ENV")")/$(basename "$VIRTUAL_ENV") "
+        fi
     fi
 
-    PS1="${SET_WINDOW_TITLE}[${userhost} ${gitprompt}${cwd}]\$ "
+    PS1="${SET_WINDOW_TITLE}${venv}[${userhost} ${gitprompt}${cwd}]\$ "
 
 }
 
