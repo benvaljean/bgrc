@@ -277,6 +277,7 @@ alias ggg="git commit -v -a"
 alias gggg="git commit -v -a -m iiiiii"
 alias gp="git push"
 alias gggp="git commit -v -a -m iiiiii;git push"
+alias gpo="git po"
 
 #Revert file mode changes in git
 git-revert-modes() {
@@ -376,6 +377,11 @@ fifg(){
     fi
     find . -type f $find_exclusions -name \**${1}\* -exec grep ${2} {} /dev/null \;
 }
+fia(){
+    #FInd Any type of file
+    find . $find_exclusions -name \**${1}\*
+}
+
 
 #Remap ~ to ` to avoid pressing shift
 bind '"`": "~"'
