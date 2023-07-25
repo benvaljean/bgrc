@@ -6,7 +6,6 @@
 [push]
 	default = matching
 [core]
-    #pager = cat
     #pager = vim -c '%sm/\\e.\\{-}m//ge' -c 'set ft=diff' -c 'normal gg' -c 'set noconfirm' -c 'cmap q q!' -
     pager = less -r
 #[http]
@@ -32,6 +31,7 @@ l = log --decorate --graph --name-status
 s = status -s -b
 sh = show
 c = commit -v
+cf = commit --fixup HEAD
 co = checkout
 cc = cm
 cm = "!f(){ git checkout $(git master-branch) $@;}; f"
@@ -53,9 +53,9 @@ cloneurl = config --get remote.origin.url
 
 
 amend = commit --amend
-r = rebase -i
-r5 = rebase -i HEAD~5
-rebm = "!f(){ git rebase -i $(git master-branch) ;}; f"
+r = rebase --autosquash -i
+r5 = rebase --autosquash -i HEAD~5
+rebm = "!f(){ git rebase --autosquash -i $(git master-branch) ;}; f"
 unstage = reset --
 discard = checkout --
 dis = checkout --
