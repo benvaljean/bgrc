@@ -17,7 +17,7 @@
 [difftool]
     prompt = false
 [branch]
-	sort = committerdate
+    sort = committerdate
 [push]
     default = simple
 [alias]
@@ -63,5 +63,5 @@ dis = checkout --
 # from http://blog.blindgaenger.net/advanced_git_aliases.html
 alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ = \\2/' | sort
 [pull]
-	ff = only
+    ff = only
 
