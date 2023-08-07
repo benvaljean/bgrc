@@ -1,8 +1,13 @@
 # Replace system ssh-agent
 # This is typically used to replace the Mac OSX ssh-agent with the newer, FIDO aware, homebrew-installed openssh ssh-agent
-# but it can be used to replace the ssh-agent on any system where you do not have root privs.
+# but it can be used to replace the ssh-agent on any system where you do not have root privs, or to allow ssh-agent to
+# work on environments like cygwin or WSL where an ssh-agent daemon might not be setup.
 #
 # You should also ensure the other openssh binaries are in a high-precedence in your $PATH
+#
+# Note: WSL users do not need this, instead you can install keychain and add the following to your .bashrc:
+# /usr/bin/keychain -q
+# source $HOME/.keychain/${HOSTNAME}-sh 
 
 NEW_SSH_AGENT=${1-$(brew --prefix openssh)/bin/ssh-agent}
 
