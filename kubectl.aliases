@@ -3,7 +3,7 @@
 # Abort if kubectl not installed
 which kubectl &>/dev/null || return
 
-# Do not resource
+# Do not re-source
 type -t __start_kubectl &>/dev/null || . <(kubectl completion bash)
 
 alias k=kubectl
@@ -14,6 +14,7 @@ alias kconf='${EDITOR} ${HOME}/.kube/config'
 
 alias kg='kubectl get'
 alias kd='kubectl describe'
+alias kr='k get -o yaml'
 
 alias kgp='kubectl get pods'
 alias kgs='kubectl get svc'
