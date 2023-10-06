@@ -122,6 +122,11 @@ history-global-grep-recent() {
     history-global-grep "$@" | tail -20
 }
 alias hggr=history-global-grep-recent
+history-global-where() {
+    # Find which session file had a string
+    find ${history_session_dir} -type f -exec grep -H "$@" '{}' \;
+}
+alias hgw=history-global-where
 
 #Add additional bin dirs to PATH
 export PATH="$PATH:~/bin:/sbin:/usr/sbin:/usr/local/bin";
