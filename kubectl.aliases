@@ -61,7 +61,12 @@ kssh() {
 alias kuse='kubectl config use-context'
 alias kwhoami='echo "$(kubectl config current-context | tr -d '\r')$(kubectl config view --minify | grep namespace | tr -d '\r')"'
 alias kcontexts='kubectl config get-contexts'
+
 kns() {
+    if [[ $# == 0 ]]; then
+        kgn
+        return
+    fi
     kubectl config set-context --current --namespace=${1}
 }
 
