@@ -415,6 +415,12 @@ critical() {
 
 export GPG_TTY=$(tty)
 
+# cd back
+cd_up() {
+    number_of_parent_dirs=${1:-1}
+    cd $(printf %.s../ $(seq "${number_of_parent_dirs}"))
+}
+alias cdd=cd_up
 
 #Post-login icons
 
