@@ -45,6 +45,10 @@ alias kgs='kg secrets'
 alias kgsa='kg secrets -A'
 alias kds='kd secrets'
 
+krs() {
+    kubectl get secret $1 --template={{.data.${2}}} | base64 --decode
+}
+
 kssh() {
     if [[ $# == 0 ]]; then
         echo -e "kssh pod-name [[container]] [[shell]]\nshell defaults to /bin/bash , container defaults to k8s selection"
