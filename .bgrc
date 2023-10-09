@@ -415,6 +415,11 @@ critical() {
 
 export GPG_TTY=$(tty)
 
+# Interpret mysql history
+mysqlhistory() {
+    page sed "s/\\\040/ /g" < ~/.mysql_history
+}
+
 # cd back
 cd_up() {
     number_of_parent_dirs=${1:-1}
