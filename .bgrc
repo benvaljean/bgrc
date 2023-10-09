@@ -350,6 +350,9 @@ page() {
 	rm "$tempfile"
 }
 
+# Disable pager for AWS
+export AWS_PAGER=""
+
 #Fix Bug in vim 7.0.237 and possibly later. Not seen in 7.4
 #https://github.com/tpope/vim-pathogen/issues/118
 export VIMBLACKLIST="blah12345"
