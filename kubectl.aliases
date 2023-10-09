@@ -17,7 +17,10 @@ alias kd='kubectl describe'
 alias kr='k get -o yaml'
 
 alias kgp='kubectl get pods'
-alias kgs='kubectl get svc'
+alias kdp='kubectl describe pod'
+
+alias kgsv='kubectl get svc'
+alias kdsv='kd svc'
 
 #kube get pods with grep
 kgpg() {
@@ -27,13 +30,20 @@ kgpg() {
         kubectl get pods | grep $1
     fi
 }
-alias kdp='kubectl describe pod'
-alias kds='kubectl describe svc'
+
 alias kgn='kubectl get ns'
 
 alias kgi='kubectl get ingress'
 alias kgia='kubectl get ingress -A'
 alias kdi='kd ingress'
+
+alias kgd='kg deploy'
+alias kgda='kg deploy -A'
+alias kdd='kd deploy'
+
+alias kgs='kg secrets'
+alias kgsa='kg secrets -A'
+alias kds='kd secrets'
 
 kssh() {
     if [[ $# == 0 ]]; then
