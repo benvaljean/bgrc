@@ -332,6 +332,7 @@ if which brew &>/dev/null; then
 fi
 
 [ -f ${HOME}/git/bgrc/kubectl.aliases ] && . ${HOME}/git/bgrc/kubectl.aliases
+[ -f ${HOME}/git/bgrc/eks.aliases ] && . ${HOME}/git/bgrc/eks.aliases
 
 #grep through history shortcut
 hg() {
