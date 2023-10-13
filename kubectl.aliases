@@ -62,8 +62,12 @@ kssh() {
     fi
 }
 
+dssh() {
+    sudo docker exec -it $1 /bin/sh
+}
+
 alias kuse='kubectl config use-context'
-alias kwhoami='echo "$(kubectl config current-context | tr -d '\r')$(kubectl config view --minify | grep namespace | tr -d '\r')"'
+alias kwhoami='echo "$(kubectl config current-context)$(kubectl config view --minify | grep namespace)"'
 alias kcontexts='kubectl config get-contexts'
 
 kns() {
