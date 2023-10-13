@@ -43,6 +43,7 @@ COLOUR_RESET='\[\033[m\]'
 COLOUR_RED='\[\033[01;31m\]'
 COLOUR_GREEN='\[\033[01;32m\]'
 COLOUR_LIGHT_BLUE='\[\033[01;34m\]'
+COLOUR_CYAN="\[\033[36m\]"
 build-prompt() {
     if [[ $? == 0 ]]; then
         local userhost="${COLOUR_GREEN}\u@\h${COLOUR_RESET}"
@@ -57,9 +58,13 @@ build-prompt() {
         if [ ! -z $VIRTUAL_ENV ]; then
             local venv="🐍$(basename "$(dirname "$VIRTUAL_ENV")")/$(basename "$VIRTUAL_ENV") "
         fi
+        if [ ! -z $AWS_PROFILE ]; then
+            AWS_PROMPT=$(echo $AWS_PROFILE | sed 's/[0-9]//g;s/-$//g;s/AD-admin-//g')
+            local aws="${COLOUR_CYAN}$AWS_PROMPT${COLOUR_RESET} "
+        fi
     fi
 
-    PS1="${SET_WINDOW_TITLE}${venv}[${userhost} ${gitprompt}${cwd}]\$ "
+    PS1="${SET_WINDOW_TITLE}${venv}[${userhost} ${aws}${gitprompt}${cwd}]\$ "
 
 }
 
