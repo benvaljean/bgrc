@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Abort if git not installed
+which git &>/dev/null || return
+
+alias g=git
+
+# Source completion if not sourced already
+type -t __git_complete &>/dev/null || . /usr/share/bash-completion/completions/git
+
+__git_complete g __git_main
+
+alias gs="git s"
+alias gl="git l"
+alias gd="git d"
+
+alias ggg="git commit -v -a"
+alias gggg="git commit -v -a -m iiiiii"
+alias gp="git push"
+alias gggp="git commit -v -a -m iiiiii;git push"
+alias gpo="git po"

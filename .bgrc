@@ -278,11 +278,6 @@ alias curls="curl -k"
 alias l="less"
 alias v="vim"
 alias s="ssh"
-alias ggg="git commit -v -a"
-alias gggg="git commit -v -a -m iiiiii"
-alias gp="git push"
-alias gggp="git commit -v -a -m iiiiii;git push"
-alias gpo="git po"
 
 #Revert file mode changes in git
 git-revert-modes() {
@@ -333,6 +328,7 @@ fi
 
 [ -f ${HOME}/git/bgrc/kubectl.aliases ] && . ${HOME}/git/bgrc/kubectl.aliases
 [ -f ${HOME}/git/bgrc/eks.aliases ] && . ${HOME}/git/bgrc/eks.aliases
+[ -f ${HOME}/git/bgrc/git.aliases ] && . ${HOME}/git/bgrc/git.aliases
 
 alias tf=terraform
 
