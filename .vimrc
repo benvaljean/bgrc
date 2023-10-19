@@ -82,4 +82,5 @@ colorscheme solarized
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
 autocmd FileType sh setlocal commentstring=#\ %s
+autocmd FileType tf setlocal commentstring=#\ %s
 
