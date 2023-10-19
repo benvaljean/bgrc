@@ -63,7 +63,7 @@ function showprompt() {
     if [[ $GIT_CLEAN == "1" ]]; then
         GIT_CLEAN_SYMBOL=💯
     else
-        GIT_CLEAN_SYMBOL=❌
+        GIT_CLEAN_SYMBOL=😈
     fi
 
     if [[ $GIT_REMOTE == "_NO_REMOTE_TRACKING_" ]]; then
