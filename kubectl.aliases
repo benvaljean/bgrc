@@ -15,6 +15,7 @@ alias kconf='${EDITOR} ${HOME}/.kube/config'
 alias kg='kubectl get'
 alias kd='kubectl describe'
 alias kr='k get -o yaml'
+alias kl=' k logs'
 
 alias kgp='kubectl get pods'
 alias kdp='kubectl describe pod'
@@ -82,3 +83,9 @@ kpfwd () {
     #kpfwd pod-match-contains pod-port
     kubectl port-forward $(kubectl get pods|grep ${1}|prow 1) 8085:${2}
 }
+
+klg() {
+    pod=$(kgpg $1|prow 1)
+    kl $pod
+}
+
