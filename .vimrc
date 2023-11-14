@@ -81,6 +81,8 @@ colorscheme solarized
 "To disable  :set nolist
 set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
 
+setlocal commentstring=#\ %s
 autocmd FileType sh setlocal commentstring=#\ %s
 autocmd FileType tf setlocal commentstring=#\ %s
+
 
