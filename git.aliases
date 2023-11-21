@@ -10,6 +10,8 @@ type -t __git_complete &>/dev/null || . /usr/share/bash-completion/completions/g
 
 __git_complete g __git_main
 
+alias cdg="cd ~/git"
+
 alias gc="git c"
 alias gs="git s"
 alias gl="git l"
@@ -21,3 +23,8 @@ alias gggg="git commit -v -a -m iiiiii"
 alias gp="git push"
 alias gggp="git commit -v -a -m iiiiii;git push"
 alias gpo="git po"
+
+gclo() {
+  git clone $1 && cd "$(basename "$_" .git)"
+}
+
