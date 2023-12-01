@@ -432,6 +432,18 @@ cd_up() {
 }
 alias cdd=cd_up
 
+# cd and ls
+cdl() {
+    cd $1
+    ls
+}
+
+# bash autocomplete dirs
+_cdl_autocomplete() {
+    cd ./
+}
+complete -d -F _cdl_autocomplete cdl
+
 #Post-login icons
 
 #chef managed host
