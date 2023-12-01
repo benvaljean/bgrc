@@ -15,10 +15,12 @@ alias kconf='${EDITOR} ${HOME}/.kube/config'
 alias kg='kubectl get'
 alias kd='kubectl describe'
 alias kr='k get -o yaml'
-alias kl=' k logs'
+alias kl='k logs'
+alias ka='k apply -f'
 
 alias kgp='kubectl get pods'
 alias kdp='kubectl describe pod'
+alias kdelp='k delete pod'
 
 alias kgsv='kubectl get svc'
 alias kdsv='kd svc'
@@ -30,6 +32,11 @@ kgpg() {
     else
         kubectl get pods | grep $1
     fi
+}
+
+# kube delete pods with grep
+kdelpg(){
+    for pod in $(kgp|grep ${1}|prow 1) ; do k delete pod ${1};done
 }
 
 alias kgn='kubectl get ns'
