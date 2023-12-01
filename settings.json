@@ -1,0 +1,44 @@
+{
+    "workbench.colorTheme": "Default Dark Modern",
+
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "terminal.integrated.commandsToSkipShell": [
+        // ... other commands
+        "workbench.action.terminal.findNext",
+        "workbench.action.nextSelectionMatchFindAction",
+        "editor.action.terminal.findNext",
+        "editor.action.nextSelectionMatchFindAction",
+      ],
+      "terminal.integrated.copyOnSelection": true,
+      "security.allowedUNCHosts": [
+        "wsl.localhost"
+      ],
+      "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+          "source": "PowerShell",
+          "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+          "path": [
+            "${env:windir}\\Sysnative\\cmd.exe",
+            "${env:windir}\\System32\\cmd.exe"
+          ],
+          "args": [],
+          "icon": "terminal-cmd"
+        },
+        "Git Bash": {
+          "source": "Git Bash"
+        },
+        "UbuntuJammy (WSL)": {
+          "path": "C:\\WINDOWS\\System32\\wsl.exe",
+          "args": [
+            "-d",
+            "UbuntuJammy",
+            "--cd",
+            "~"
+          ]
+        }
+      },
+      "terminal.integrated.defaultProfile.windows": "UbuntuJammy (WSL)"
+}
+
