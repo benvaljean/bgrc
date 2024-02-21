@@ -40,5 +40,7 @@
         }
       },
       "terminal.integrated.defaultProfile.windows": "UbuntuJammy (WSL)"
+      "terminal.integrated.automationProfile.linux": {},
+      "terminal.integrated.tabs.title": "${sequence}"
 }
 
