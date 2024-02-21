@@ -444,6 +444,14 @@ _cdl_autocomplete() {
 }
 complete -d -F _cdl_autocomplete cdl
 
+switchoff() {
+    mv ${1} ${1}.off
+}
+switchon() {
+    mv ${1} ${1:0:-4}
+}
+
+
 #Post-login icons
 
 #chef managed host
