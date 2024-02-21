@@ -30,7 +30,7 @@ export PAGER=less
 #Do not try to set window title if $TERM is not set as it is probably console and the prompt will look ugly
 case "$TERM" in
 	screen*|xterm*|rxvt*|Eterm*|kterm*|dtterm*|ansi*|cygwin*)
-		SET_WINDOW_TITLE='\[\033]0;\h\007\]'
+		SET_WINDOW_TITLE='\[\033]0;\h \W\007\]'
         EXTRA_PROMPT_FEATURES=1
 	;;
 	*)
