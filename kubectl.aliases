@@ -25,6 +25,14 @@ alias kdelp='k delete pod'
 alias kgsv='kubectl get svc'
 alias kdsv='kd svc'
 
+kapi() {
+    if [[ -z $1 ]]; then
+        k api-resources
+    else
+        k api-resources | grep $1
+    fi
+}
+
 #kube get pods with grep
 kgpg() {
     if [[ -z $1 ]]; then
@@ -36,7 +44,7 @@ kgpg() {
 
 # kube delete pods with grep
 kdelpg(){
-    for pod in $(kgp|grep ${1}|prow 1) ; do k delete pod ${1};done
+    for pod in $(kgp|grep ${1}|prow 1) ; do k delete pod ${pod};done
 }
 
 alias kgn='kubectl get ns'
@@ -77,6 +85,7 @@ dssh() {
 alias kuse='kubectl config use-context'
 alias kwhoami='echo "$(kubectl config current-context)$(kubectl config view --minify | grep namespace)"'
 alias kcontexts='kubectl config get-contexts'
+alias kls=kcontexts
 
 kns() {
     if [[ $# == 0 ]]; then
