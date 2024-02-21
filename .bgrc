@@ -337,6 +337,9 @@ fi
 [ -f ${HOME}/git/bgrc/hgg-choice ] && . ${HOME}/git/bgrc/hgg-choice
 
 alias tf=terraform
+alias tfp='date;tf plan'
+alias tfa='date;tf apply'
+
 
 #grep through history shortcut
 hg() {
