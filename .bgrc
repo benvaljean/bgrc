@@ -376,7 +376,7 @@ bglvm(){
     sudo lvdisplay -C
 }
 
-find_exclusions='-not -path "*.terragrunt-cache*" -not -path "*.git*"'
+find_exclusions='-not -path "*.terragrunt-cache*" -not -path "*.git*" -not -path "*.terraform*"'
 
 fif(){
     #FInd File
@@ -388,7 +388,7 @@ fifg(){
         echo fifg Usage: filename-pattern grep-pattern
         return
     fi
-    find . -type f $find_exclusions -name \**${1}\* -exec grep ${2} {} /dev/null \;
+    find . -type f $find_exclusions -name \**${1}\* -exec grep "${2}" {} /dev/null \;
 }
 fia(){
     #FInd Any type of file
