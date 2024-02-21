@@ -25,6 +25,6 @@ alias gggp="git commit -v -a -m iiiiii;git push"
 alias gpo="git po"
 
 gclo() {
-  git clone $1 && cd "$(basename "$_" .git)"
+  git clone $1 && cd "$(basename "$_" .git)" && ls
 }
 
