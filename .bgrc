@@ -454,6 +454,13 @@ switchon() {
     mv ${1} ${1:0:-4}
 }
 
+# Conf files
+bgrcconf() {
+    ${EDITOR} ~/.bgrc
+    . ~/.bgrc
+}
+alias awsconf='${EDITOR} ~/.aws/config'
+
 
 #Post-login icons
 
