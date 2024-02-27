@@ -335,6 +335,7 @@ fi
 [ -f ${HOME}/git/bgrc/eks.aliases ] && . ${HOME}/git/bgrc/eks.aliases
 [ -f ${HOME}/git/bgrc/git.aliases ] && . ${HOME}/git/bgrc/git.aliases
 [ -f ${HOME}/git/bgrc/hgg-choice ] && . ${HOME}/git/bgrc/hgg-choice
+[ -f ${HOME}/git/bgrc/kcontext-choice ] && . ${HOME}/git/bgrc/kcontext-choice
 
 alias tf=terraform
 alias tfp='date;tf plan'

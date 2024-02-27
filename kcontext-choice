@@ -1,0 +1,48 @@
+#!/bin/bash
+
+kubernetes-context-choser() {
+    export menu=$(mktemp)
+    export menu_chosen=$(mktemp)
+    export menu_title="Choose k8s context:"
+
+    #if [[ $history_grep_search_type == "recent" ]]; then
+    #    hggr $history_filter_string > $menu
+    #else
+    #    hgg $history_filter_string > $menu
+    #fi
+
+    # kubectl config get-contexts --no-headers=true |grep -v '^\*'| awk '{ $3=""; print }' > $menu
+    kubectl config get-contexts --no-headers=true |grep -v '^\*' >$menu
+
+    # '{$1=""; $2=""; sub("  ", ""); print}')
+
+    #cat $menu|grep -v '^\*' >$menu
+    #|grep -v '^CURRENT' >$menu
+
+    node ~/git/bgrc/node-choser/index.js
+    context=$(cat $menu_chosen|awk '{print $1}')
+
+    #echo $menu_chosen
+    if [[ "$context" == "" ]]; then
+        return
+    elif [[ "$context" =~ ^\* ]]; then
+        echo "Context unchanged"
+        return
+    fi
+    
+    # eval "$command"
+    kuse $context
+
+    # # Manually add to history
+    # echo -e "#$(date +%s)\n${command}" >> ${history_session_dir}/${history_session_file}
+    # history -r ${history_session_dir}/${history_session_file}
+
+    rm $menu $menu_chosen
+}
+
+#alias hggc='history-choser all'
+#alias hggrc='history-choser recent'
+#alias hh='history-choser recent'
+
+alias kk='kubernetes-context-choser'
+

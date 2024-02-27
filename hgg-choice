@@ -3,24 +3,25 @@
 history-choser() {
     history_grep_search_type=$1
     history_filter_string=$2
-    export hgg_file=$(mktemp)
-    export hgg_chosen=$(mktemp)
+    export menu=$(mktemp)
+    export menu_chosen=$(mktemp)
+    export menu_title="history-global-grep-recent:"
 
     if [[ $history_grep_search_type == "recent" ]]; then
-        hggr $history_filter_string > $hgg_file
+        hggr $history_filter_string > $menu
     else
-        hgg $history_filter_string > $hgg_file
+        hgg $history_filter_string > $menu
     fi
 
     node ~/git/bgrc/node-choser/index.js
-    command=$(cat $hgg_chosen|awk '{$1=""; $2=""; sub("  ", ""); print}')
+    command=$(cat $menu_chosen|awk '{$1=""; $2=""; sub("  ", ""); print}')
     eval "$command"
 
     # Manually add to history
     echo -e "#$(date +%s)\n${command}" >> ${history_session_dir}/${history_session_file}
     history -r ${history_session_dir}/${history_session_file}
 
-    rm $hgg_file $hgg_chosen
+    rm $menu $menu_chosen
 }
 
 alias hggc='history-choser all'
