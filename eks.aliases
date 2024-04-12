@@ -6,7 +6,7 @@ which aws &>/dev/null || return
 alias eksls='aws eks list-clusters'
 
 eksadd() {
-    aws eks update-kubeconfig --name $1 --alias $1 ${@:2}
-    kuse $1
+    aws eks update-kubeconfig --name $1 --alias $2 --user-alias $2
+    kuse $2
 }
 
