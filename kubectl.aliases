@@ -6,6 +6,10 @@ which kubectl &>/dev/null || return
 # Do not re-source
 type -t __start_kubectl &>/dev/null || . <(kubectl completion bash)
 
+firstpod() {
+   kubectl get pods -o custom-columns=':metadata.name' | egrep -v '^$' |head -n1
+}
+
 alias k=kubectl
 
 complete -F __start_kubectl k
@@ -15,7 +19,18 @@ alias kconf='${EDITOR} ${HOME}/.kube/config'
 alias kg='kubectl get'
 alias kd='kubectl describe'
 alias kr='k get -o yaml'
-alias kl='k logs'
+
+klogs() {
+    if [[ $# -eq 0 ]]; then
+        # kl the first pod by default
+        k logs "$(firstpod)"
+        return
+    fi
+    k logs "$@"
+}
+alias kl=klogs
+alias klf='klogs "$(firstpod)" --since=3m -f'
+
 alias ka='k apply -f'
 
 alias kgp='kubectl get pods'
@@ -70,9 +85,13 @@ krsdocker() {
 }
 
 kssh() {
-    if [[ $# == 0 ]]; then
+    if [[ $1 == "--help" ]]; then
         echo -e "kssh pod-name [[container]] [[shell]]\nshell defaults to /bin/bash , container defaults to k8s selection"
         return
+    fi
+    if [[ $# == 0 ]]; then
+        # kssh into first pod by default
+        kubectl exec -it $(firstpod) -- /bin/bash
     fi
     if [[ $# == 2 ]] || [[ $# == 1 ]]; then
         kubectl exec -it $1 -- ${2:-/bin/bash}
@@ -109,3 +128,6 @@ klg() {
     kl $pod
 }
 
+# argocd
+alias kgapps='kg applications.argoproj.io -A'
+alias argodash='argocd admin dashboard -n argocd --port 8091'
